@@ -173,9 +173,449 @@
       document.getElementById("ack-email").textContent = email;
     }
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!DOCTYPE html>
+<html>
+<head>
+  <title>Ticket Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    #acknowledgment {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #d4edda;
+      border-radius: 5px;
+    }
+
+    .success {
+      color: #155724;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Ticket Booking</h2>
+    <form id="bookingForm">
+      <label for="pnrNo">PNR No:</label>
+      <input type="text" id="pnrNo" readonly><br>
+
+      <label for="travelDate">Travel Date:</label>
+      <input type="date" id="travelDate" required><br>
+
+      <label for="source">Source:</label>
+      <input type="text" id="source" required><br>
+
+      <label for="destination">Destination:</label>
+      <input type="text" id="destination" required><br>
+
+      <label for="status">Status:</label>
+      <select id="status">
+        <option value="New">New</option>
+        <option value="Confirm">Confirm</option>
+        <option value="Hold">Hold</option>
+      </select><br>
+
+      <label for="seatPreference">Seat Preference:</label>
+      <select id="seatPreference">
+        <option value="Window">Window</option>
+        <option value="Middle">Middle</option>
+        <option value="Aisle">Aisle</option>
+      </select><br>
+
+      <label for="mealPreference">Meal Preference:</label>
+      <select id="mealPreference">
+        <option value="Veg">Veg</option>
+        <option value="NonVeg">Non Veg</option>
+      </select><br>
+
+      <input type="submit" value="Book Ticket">
+    </form>
+
+    <div id="acknowledgment" style="display: none;">
+      <h2 class="success">Ticket Booked successfully.</h2>
+      <p><strong>PNR No:</strong> <span id="ackPnrNo"></span></p>
+      <p><strong>Travel Date:</strong> <span id="ackTravelDate"></span></p>
+      <p><strong>Source Airport:</strong> <span id="ackSource"></span></p>
+      <p><strong>Destination Airport:</strong> <span id="ackDestination"></span></p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Generate random PNR No
+      var pnrNo = generatePNRNo();
+
+      // Display PNR No
+      document.getElementById("pnrNo").value = pnrNo;
+    });
+
+    document.getElementById("bookingForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      bookTicket();
+    });
+
+    function bookTicket() {
+      // Retrieve form values
+      var travelDate = document.getElementById("travelDate").value;
+      var source = document.getElementById("source").value;
+      var destination = document.getElementById("destination").value;
+
+      // Display acknowledgment
+      document.getElementById("ackPnrNo").textContent = document.getElementById("pnrNo").value;
+      document.getElementById("ackTravelDate").textContent = travelDate;
+      document.getElementById("ackSource").textContent = source;
+      document.getElementById("ackDestination").textContent = destination;
+      document.getElementById("bookingForm").style.display = "none";
+      document.getElementById("acknowledgment").style.display = "block";
+    }
+
+    function generatePNRNo() {
+      var randomNo = Math.floor(Math.random() * 1000000000);
+      return "PNR" + randomNo.toString().padStart(10, "0");
+    }
+  </script>
+</body>
+</html>
+
+  </plaintext>
 </body>
 </html>
 
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .pagination a {
+            color: #333;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <table id="bookingTable">
+        <tr>
+            <th>PNR NO</th>
+            <th>Travel Date</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Seat Preference</th>
+            <th>Meal Preference</th>
+        </tr>
+        <tr>
+            <td>PNR001</td>
+            <td>2023-07-10</td>
+            <td>New York</td>
+            <td>London</td>
+            <td>Window</td>
+            <td>Vegetarian</td>
+        </tr>
+        <tr>
+            <td>PNR002</td>
+            <td>2023-07-12</td>
+            <td>Paris</td>
+            <td>Rome</td>
+            <td>Aisle</td>
+            <td>Non-vegetarian</td>
+        </tr>
+        <tr>
+            <td>PNR003</td>
+            <td>2023-07-15</td>
+            <td>Sydney</td>
+            <td>Tokyo</td>
+            <td>Window</td>
+            <td>Vegetarian</td>
+        </tr>
+        <tr>
+            <td>PNR004</td>
+            <td>2023-07-20</td>
+            <td>London</td>
+            <td>New York</td>
+            <td>Aisle</td>
+            <td>Non-vegetarian</td>
+        </tr>
+        <tr>
+            <td>PNR005</td>
+            <td>2023-07-25</td>
+            <td>Rome</td>
+            <td>Paris</td>
+            <td>Window</td>
+            <td>Vegetarian</td>
+        </tr>
+        <tr>
+            <td>PNR006</td>
+            <td>2023-07-28</td>
+            <td>Tokyo</td>
+            <td>Sydney</td>
+            <td>Aisle</td>
+            <td>Non-vegetarian</td>
+        </tr>
+        <tr>
+            <td>PNR007</td>
+            <td>2023-08-02</td>
+            <td>New York</td>
+            <td>London</td>
+            <td>Window</td>
+            <td>Vegetarian</td>
+        </tr>
+        <tr>
+            <td>PNR008</td>
+            <td>2023-08-05</td>
+            <td>Paris</td>
+            <td>Rome</td>
+            <td>Aisle</td>
+            <td>Non-vegetarian</td>
+        </tr>
+    </table>
+    
+    <div class="pagination">
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+    </div>
+    
+    <script>
+        // Pagination logic
+        var table = document.getElementById("bookingTable");
+        var rowsPerPage = 5;
+        var currentPage = 0;
+    
+        function showPage(page) {
+            currentPage = page;
+            var start = page * rowsPerPage + 1;
+            var end = start + rowsPerPage - 1;
+    
+            for (var i = 1; i < table.rows.length; i++) {
+                if (i >= start && i <= end) {
+                    table.rows[i].style.display = "table-row";
+                } else {
+                    table.rows[i].style.display = "none";
+                }
+            }
+        }
+    
+        // Event listener for pagination links
+        var paginationLinks = document.querySelectorAll(".pagination a");
+        for (var i = 0; i < paginationLinks.length; i++) {
+            paginationLinks[i].addEventListener("click", function (event) {
+                event.preventDefault();
+                var page = parseInt(this.innerHTML) - 1;
+                showPage(page);
+                updatePaginationLinks(page);
+            });
+        }
+    
+        // Update active pagination link
+        function updatePaginationLinks(page) {
+            for (var i = 0; i < paginationLinks.length; i++) {
+                if (i === page) {
+                    paginationLinks[i].classList.add("active");
+                } else {
+                    paginationLinks[i].classList.remove("active");
+                }
+            }
+        }
+    
+        // Initially show the first page
+        showPage(currentPage);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.sql.*;
+import java.util.Scanner;
+class pass
+{
+    public static void main(String  args[])
+
+{
+    
+Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            //Class.forName("oracle.jdbc.driver.OracleDriver");
+            // Establishing a connection to the Oracle database
+            connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "prakash", "prakash");
+
+            // Creating a prepared statement for inserting data
+            String query = "INSERT INTO passenger (passid, pass_name, email, password, address, mobile) VALUES (?, ?, ?, ?, ?, ?)";
+            preparedStatement = connection.prepareStatement(query);
+
+            // Setting parameter values
+            preparedStatement.setInt(1, 1);
+            preparedStatement.setString(2, "saketh  ");
+            preparedStatement.setString(3, "myexample.com");
+            preparedStatement.setString(4, "mjhuupassword");
+            preparedStatement.setString(5, "123 Mdscddsain St");
+            preparedStatement.setInt(6, 12342623);
+
+            // Executing the insert statement
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Data inserted successfully.");
+            } else {
+                System.out.println("Failed to insert data.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Closing the resources
+            try {
+                if (preparedStatement != null)
+                    preparedStatement.close();
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+}
