@@ -551,71 +551,125 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+package hyd;
 import java.sql.*;
-import java.util.Scanner;
-class pass
-{
-    public static void main(String  args[])
+import java.util.*;
+public class ilp {
+    static final String JDBC_URL = "jdbc:derby:salesdb;create=true";
+ public static void main(String args[]) {
+	 
+    	         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
+            createTable(connection); // Create the users table if it doesn't exist
 
-{
-    
-Connection connection = null;
-        PreparedStatement preparedStatement = null;
+            int choice = 0;
+            Scanner sc = new Scanner(System.in); 
+            while (choice != 3) {
+                System.out.println("Welcome to the Ticket Booking System");
+                System.out.println("1. Login");
+                System.out.println("2. Registration");
+                System.out.println("3. Exit");
+                System.out.print("Enter your choice: ");
+                choice = sc.nextInt();
 
-        try {
-            //Class.forName("oracle.jdbc.driver.OracleDriver");
-            // Establishing a connection to the Oracle database
-            connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "prakash", "prakash");
-
-            // Creating a prepared statement for inserting data
-            String query = "INSERT INTO passenger (passid, pass_name, email, password, address, mobile) VALUES (?, ?, ?, ?, ?, ?)";
-            preparedStatement = connection.prepareStatement(query);
-
-            // Setting parameter values
-            preparedStatement.setInt(1, 1);
-            preparedStatement.setString(2, "saketh  ");
-            preparedStatement.setString(3, "myexample.com");
-            preparedStatement.setString(4, "mjhuupassword");
-            preparedStatement.setString(5, "123 Mdscddsain St");
-            preparedStatement.setInt(6, 12342623);
-
-            // Executing the insert statement
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Data inserted successfully.");
-            } else {
-                System.out.println("Failed to insert data.");
+                switch (choice) {
+                    case 1:
+                        login(connection,sc);
+                        break;
+                    case 2:
+                        register(connection,sc);
+                        break;
+                    case 3:
+                        System.out.println("Exiting the system");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Closing the resources
-            try {
-                if (preparedStatement != null)
-                    preparedStatement.close();
-                if (connection != null)
-                    connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        }
+    }
+
+    private static void createTable(Connection connection) throws SQLException {
+        String sql = "CREATE TABLE usertcsssssp2 (id INT, name VARCHAR(255), email VARCHAR(255), password VARCHAR(255), address VARCHAR(255))";
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(sql);
+        }
+    }
+
+    private static void login(Connection connection,Scanner sc) throws SQLException {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+        System.out.print("Enter Password: ");
+        String password = sc.next();
+
+        String sql = "SELECT * FROM users WHERE id = ? AND password = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                System.out.println("Login successful!");
+                int option = 0;
+                while (option != 3) {
+                    System.out.println("1. Book Ticket");
+                    System.out.println("2. View Ticket");
+                    System.out.println("3. Cancel Ticket");
+                    System.out.print("Enter your choice: ");
+                    option = sc.nextInt();
+
+                    switch (option) {
+                        case 1:
+                            System.out.println("Book Ticket");
+                            // Implement the book ticket logic here
+                            break;
+                        case 2:
+                            System.out.println("View Ticket");
+                            // Implement the view ticket logic here
+                            break;
+                        case 3:
+                            System.out.println("Cancel Ticket");
+                            // Implement the cancel ticket logic here
+                            break;
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                            break;
+                    }
+                }
+            } else {
+                System.out.println("Invalid ID or password. Please try again.");
             }
         }
     }
 
+    private static void register(Connection connection,Scanner sc) throws SQLException {
+        System.out.print("Enter Name: ");
+        String name = sc.next();
+        System.out.print("Enter Email: ");
+        String email = sc.next();
+        System.out.print("Enter Password: ");
+        String password = sc.next();
+        System.out.print("Enter Address: ");
+        String address = sc.next();
+        int id = generateRandomId();
 
+        String sql = "INSERT INTO users (id, name, email, password, address) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, email);
+            statement.setString(4, password);
+            statement.setString(5, address);
+            statement.executeUpdate();
+            System.out.println(id);
+            System.out.println("Registration successful!");
+        }
+    }
 
-
+    private static int generateRandomId() {
+        // Generate a random 7-digit number
+        return (int) (Math.random() * 9000000) + 1000000;
+    }
 }
