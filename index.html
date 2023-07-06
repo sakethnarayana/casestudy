@@ -1,675 +1,735 @@
-<!DOCTYPE html>
-<html>
-
-<body>
-<plaintext>
-
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Passenger Registration</title>
-  <style>
-    body {
-      background-color: #f2f2f2;
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      max-width: 400px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-      color: #333;
-    }
-    input[type="text"],
-    input[type="password"],
-    input[type="tel"],
-    textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-    }
-    textarea {
-      height: 80px;
-    }
-    .success-message {
-      color: green;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 20px;
-    }
-    .error-message {
-      color: red;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-    .ack-container {
-      margin-top: 20px;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    .ack-container label {
-      color: #333;
-      font-weight: bold;
-      display: inline-block;
-      margin-right: 10px;
-    }
-    .ack-container span {
-      color: #555;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Passenger Registration</h1>
-    <div class="form-group">
-      <label for="passenger-id">Passenger ID:</label>
-      <input type="text" id="passenger-id" readonly>
-    </div>
-    <form id="registration-form" onsubmit="registerPassenger(event)">
-      <div class="form-group">
-        <label for="passenger-name">Passenger Name:</label>
-        <input type="text" id="passenger-name" maxlength="50" pattern="[A-Za-z]{3,}" title="Please enter a valid name (minimum 3 letters)" required>
-        <span class="error-message" id="name-error"></span>
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" maxlength="30" required>
-      </div>
-      <div class="form-group">
-        <label for="address">Address:</label>
-        <textarea id="address" maxlength="100" required></textarea>
-      </div>
-      <div class="form-group">
-        <label for="contact-number">Contact Number:</label>
-        <input type="tel" id="contact-number" pattern="[0-9]{10}" title="Please enter a valid 10-digit contact number" required>
-        <span class="error-message" id="contact-error"></span>
-      </div>
-      <div class="form-group">
-        <input type="submit" value="Register" style="background-color: #4CAF50; color: #fff; border: none; padding: 8px 16px; border-radius: 3px; cursor: pointer;">
-      </div>
-    </form>
-  </div>
-  
-  <div id="acknowledgment-screen" style="display: none;">
-    <h2 class="success-message">Passenger Registration successful.</h2>
-    <div class="ack-container">
-      <div class="form-group">
-        <label for="ack-passenger-id">Passenger ID:</label>
-        <span id="ack-passenger-id"></span>
-      </div>
-      <div class="form-group">
-        <label for="ack-passenger-name">Passenger Name:</label>
-        <span id="ack-passenger-name"></span>
-      </div>
-      <div class="form-group">
-        <label for="ack-email">Email:</label>
-        <span id="ack-email"></span>
-      </div>
+  <plaintext>
+    --------------------------------------------------------------------------------------------------------------------------------------
+    -----------------------------------------------index---------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------------------------------------------------------
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body bgcolor="blue"> 
+  <div class="card">
+    <img src="https://img.freepik.com/free-vector/flat-travel-background_23-2148047306.jpg?w=2000" alt="Image">
+    <div class="card-body">
+      <a class="btn" href="signup.html">Sign Up</a>
+      <a class="btn" href="signin.html">Sign In</a>
     </div>
   </div>
-  
-  <script>
-    function generatePassengerId() {
-      return Math.floor(100000 + Math.random() * 900000);
-    }
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------------------------------------------
+    -----------------------------------------------signin---------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------------------------------------------------------
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Login Page </title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #7895CB;
+                font-family: Georgia;
+            }
     
-    // Generate and display the Passenger ID when the page loads
-    window.onload = function() {
-      document.getElementById("passenger-id").value = generatePassengerId();
-    }
+            .card {
+                background-color: #A0BFE0;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                width: 400px;
+                text-align: center;
+            }
     
-    function registerPassenger(event) {
-      event.preventDefault();
-      var passengerNameInput = document.getElementById("passenger-name");
-      var contactNumberInput = document.getElementById("contact-number");
-      var nameError = document.getElementById("name-error");
-      var contactError = document.getElementById("contact-error");
-      
-      nameError.textContent = "";
-      contactError.textContent = "";
-      
-      var passengerName = passengerNameInput.value.trim();
-      var contactNumber = contactNumberInput.value.trim();
-      
-      if (passengerName.length < 3) {
-        nameError.textContent = "Name must be at least 3 characters long.";
-        return;
-      }
-      
-      if (!/^\d{10}$/.test(contactNumber)) {
-        contactError.textContent = "Please enter a valid 10-digit contact number.";
-        return;
-      }
-      
-      document.getElementById("registration-form").style.display = "none";
-      document.getElementById("acknowledgment-screen").style.display = "block";
-      
-      var passengerId = document.getElementById("passenger-id").value;
-      var email = document.getElementById("email").value;
-      
-      document.getElementById("ack-passenger-id").textContent = passengerId;
-      document.getElementById("ack-passenger-name").textContent = passengerName;
-      document.getElementById("ack-email").textContent = email;
-    }
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            .form-group {
+                margin-bottom: 20px;
+            }
+    
+            .form-group label {
+                display: block;
+                text-align: left;
+                margin-bottom: 5px;
+            }
+    
+            .form-group input[type="text"],
+            .form-group input[type="password"] {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            .btn {
+                background: #3434d9;
+                background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
+                background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
+                background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
+                background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
+                background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
+                -webkit-border-radius: 21;
+                -moz-border-radius: 21;
+                border-radius: 21px;
+                font-family: Georgia;
+                color: #ffffff;
+                font-size: 20px;
+                padding: 10px 20px 10px 20px;
+                text-decoration: none;
+              }
+              
+              .btn:hover {
+                background: #3cb0fd;
+                background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+                background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+                background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+                background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+                background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+                text-decoration: none;
+              }
+        </style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    </head>
+    <body>
+        <div class="card">
+            <h1>Login <i class="bi bi-person-circle" style="color: brown;"></i></h1>
+            <form id="loginForm" onsubmit="login(event)">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn">
+                </div>
+            </form>
+        </div>
+        <script>
+            function login(event) {
+                event.preventDefault();
+        
+                // Get the form values
+                var name = document.getElementById('name').value;
+                var password = document.getElementById('password').value;
+        
+                // Perform login validation (dummy validation for demonstration)
+                if (name === 'admin' && password === 'password') {
+                    // Redirect to booking.html
+                    window.location.href = 'booking.html';
+                } else {
+                    alert('Login failed! Please check your credentials.');
+                }
+            }
+        </script>
+    </body>
+    </html>
+    
+    --------------------------------------------------------------------------------------------------------------------------------------
+    -----------------------------------------------list---------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------------------------------------------------------
     <!DOCTYPE html>
 <html>
 <head>
-  <title>Ticket Booking</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-    }
-
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      color: #333;
-    }
-
-    label {
-      font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="date"],
-    select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    input[type="submit"] {
-      background-color: #4caf50;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    #acknowledgment {
-      margin-top: 20px;
-      padding: 20px;
-      background-color: #d4edda;
-      border-radius: 5px;
-    }
-
-    .success {
-      color: #155724;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Ticket Booking</h2>
-    <form id="bookingForm">
-      <label for="pnrNo">PNR No:</label>
-      <input type="text" id="pnrNo" readonly><br>
-
-      <label for="travelDate">Travel Date:</label>
-      <input type="date" id="travelDate" required><br>
-
-      <label for="source">Source:</label>
-      <input type="text" id="source" required><br>
-
-      <label for="destination">Destination:</label>
-      <input type="text" id="destination" required><br>
-
-      <label for="status">Status:</label>
-      <select id="status">
-        <option value="New">New</option>
-        <option value="Confirm">Confirm</option>
-        <option value="Hold">Hold</option>
-      </select><br>
-
-      <label for="seatPreference">Seat Preference:</label>
-      <select id="seatPreference">
-        <option value="Window">Window</option>
-        <option value="Middle">Middle</option>
-        <option value="Aisle">Aisle</option>
-      </select><br>
-
-      <label for="mealPreference">Meal Preference:</label>
-      <select id="mealPreference">
-        <option value="Veg">Veg</option>
-        <option value="NonVeg">Non Veg</option>
-      </select><br>
-
-      <input type="submit" value="Book Ticket">
-    </form>
-
-    <div id="acknowledgment" style="display: none;">
-      <h2 class="success">Ticket Booked successfully.</h2>
-      <p><strong>PNR No:</strong> <span id="ackPnrNo"></span></p>
-      <p><strong>Travel Date:</strong> <span id="ackTravelDate"></span></p>
-      <p><strong>Source Airport:</strong> <span id="ackSource"></span></p>
-      <p><strong>Destination Airport:</strong> <span id="ackDestination"></span></p>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      // Generate random PNR No
-      var pnrNo = generatePNRNo();
-
-      // Display PNR No
-      document.getElementById("pnrNo").value = pnrNo;
-    });
-
-    document.getElementById("bookingForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      bookTicket();
-    });
-
-    function bookTicket() {
-      // Retrieve form values
-      var travelDate = document.getElementById("travelDate").value;
-      var source = document.getElementById("source").value;
-      var destination = document.getElementById("destination").value;
-
-      // Display acknowledgment
-      document.getElementById("ackPnrNo").textContent = document.getElementById("pnrNo").value;
-      document.getElementById("ackTravelDate").textContent = travelDate;
-      document.getElementById("ackSource").textContent = source;
-      document.getElementById("ackDestination").textContent = destination;
-      document.getElementById("bookingForm").style.display = "none";
-      document.getElementById("acknowledgment").style.display = "block";
-    }
-
-    function generatePNRNo() {
-      var randomNo = Math.floor(Math.random() * 1000000000);
-      return "PNR" + randomNo.toString().padStart(10, "0");
-    }
-  </script>
-</body>
-</html>
-
-  </plaintext>
-</body>
-</html>
-
-</body>
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
+    <title>Booking Details</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #7895CB;
+            font-family: Georgia;
         }
-        
+
+        .card {
+            background-color: #A0BFE0;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 600px;
+            text-align: center;
+            color: #333;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        
+
         th, td {
-            border: 1px solid #ddd;
             padding: 8px;
-            text-align: left;
+            border-bottom: 1px solid #ccc;
         }
-        
+
         th {
-            background-color: #f2f2f2;
+            background-color: #7895CB;
+            color: #fff;
+            font-weight: bold;
         }
-        
+
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            align-items: center;
         }
-        
+
         .pagination a {
-            color: #333;
-            padding: 8px 16px;
-            text-decoration: none;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin: 0 4px;
-        }
-        
-        .pagination a.active {
+            display: inline-block;
+            padding: 8px;
             background-color: #4CAF50;
-            color: white;
+            color: #fff;
+            text-decoration: none;
+            margin: 0 5px;
+            border-radius: 4px;
         }
+
+        .pagination a:hover {
+            background-color: #45a049;
+        }
+        .btn {
+            background: #3434d9;
+            background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
+            background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
+            background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
+            background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
+            background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
+            -webkit-border-radius: 21;
+            -moz-border-radius: 21;
+            border-radius: 21px;
+            font-family: Georgia;
+            color: #ffffff;
+            font-size: 20px;
+            padding: 10px 20px 10px 20px;
+            text-decoration: none;
+          }
+          
+          .btn:hover {
+            background: #3cb0fd;
+            background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+            text-decoration: none;
+          }
     </style>
 </head>
 <body>
-    <table id="bookingTable">
-        <tr>
-            <th>PNR NO</th>
-            <th>Travel Date</th>
-            <th>Source</th>
-            <th>Destination</th>
-            <th>Seat Preference</th>
-            <th>Meal Preference</th>
-        </tr>
-        <tr>
-            <td>PNR001</td>
-            <td>2023-07-10</td>
-            <td>New York</td>
-            <td>London</td>
-            <td>Window</td>
-            <td>Vegetarian</td>
-        </tr>
-        <tr>
-            <td>PNR002</td>
-            <td>2023-07-12</td>
-            <td>Paris</td>
-            <td>Rome</td>
-            <td>Aisle</td>
-            <td>Non-vegetarian</td>
-        </tr>
-        <tr>
-            <td>PNR003</td>
-            <td>2023-07-15</td>
-            <td>Sydney</td>
-            <td>Tokyo</td>
-            <td>Window</td>
-            <td>Vegetarian</td>
-        </tr>
-        <tr>
-            <td>PNR004</td>
-            <td>2023-07-20</td>
-            <td>London</td>
-            <td>New York</td>
-            <td>Aisle</td>
-            <td>Non-vegetarian</td>
-        </tr>
-        <tr>
-            <td>PNR005</td>
-            <td>2023-07-25</td>
-            <td>Rome</td>
-            <td>Paris</td>
-            <td>Window</td>
-            <td>Vegetarian</td>
-        </tr>
-        <tr>
-            <td>PNR006</td>
-            <td>2023-07-28</td>
-            <td>Tokyo</td>
-            <td>Sydney</td>
-            <td>Aisle</td>
-            <td>Non-vegetarian</td>
-        </tr>
-        <tr>
-            <td>PNR007</td>
-            <td>2023-08-02</td>
-            <td>New York</td>
-            <td>London</td>
-            <td>Window</td>
-            <td>Vegetarian</td>
-        </tr>
-        <tr>
-            <td>PNR008</td>
-            <td>2023-08-05</td>
-            <td>Paris</td>
-            <td>Rome</td>
-            <td>Aisle</td>
-            <td>Non-vegetarian</td>
-        </tr>
-    </table>
-    
-    <div class="pagination">
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
+    <div class="card">
+        <h1>Booking Details</h1>
+        <table id="bookingTable">
+            <tr>
+                <th>PNR NO</th>
+                <th>Travel Date</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Seat Preference</th>
+                <th>Meal Preference</th>
+            </tr>
+            <tr>
+                <td>PNR1</td>
+                <td>2023-07-10</td>
+                <td>Source1</td>
+                <td>Destination1</td>
+                <td>Window</td>
+                <td>Veg</td>
+            </tr>
+            <tr>
+                <td>PNR2</td>
+                <td>2023-07-11</td>
+                <td>Source2</td>
+                <td>Destination2</td>
+                <td>Middle</td>
+                <td>Non Veg</td>
+            </tr>
+            <tr>
+                <td>PNR3</td>
+                <td>2023-07-12</td>
+                <td>Source3</td>
+                <td>Destination3</td>
+                <td>Aisle</td>
+                <td>Veg</td>
+            </tr>
+            <tr>
+                <td>PNR4</td>
+                <td>2023-07-13</td>
+                <td>Source4</td>
+                <td>Destination4</td>
+                <td>Window</td>
+                <td>Veg</td>
+            </tr>
+            <tr>
+                <td>PNR5</td>
+                <td>2023-07-14</td>
+                <td>Source5</td>
+                <td>Destination5</td>
+                <td>Middle</td>
+                <td>Non Veg</td>
+            </tr>
+            <tr>
+                <td>PNR6</td>
+                <td>2023-07-15</td>
+                <td>Source6</td>
+                <td>Destination6</td>
+                <td>Window</td>
+                <td>Veg</td>
+            </tr>
+            <tr>
+                <td>PNR7</td>
+                <td>2023-07-16</td>
+                <td>Source7</td>
+                <td>Destination7</td>
+                <td>Middle</td>
+                <td>Non Veg</td>
+            </tr>
+            <tr>
+                <td>PNR8</td>
+                <td>2023-07-17</td>
+                <td>Source8</td>
+                <td>Destination8</td>
+                <td>Aisle</td>
+                <td>Veg</td>
+            </tr>
+        </table>
+        <div class="pagination">
+            <a href="#" class="btn" id="prevBtn">Prev</a>
+            <a href="#" class="btn" id="nextBtn">Next</a>
+        </div>
     </div>
-    
+
     <script>
-        // Pagination logic
-        var table = document.getElementById("bookingTable");
-        var rowsPerPage = 5;
         var currentPage = 0;
-    
-        function showPage(page) {
-            currentPage = page;
-            var start = page * rowsPerPage + 1;
-            var end = start + rowsPerPage - 1;
-    
-            for (var i = 1; i < table.rows.length; i++) {
-                if (i >= start && i <= end) {
-                    table.rows[i].style.display = "table-row";
-                } else {
-                    table.rows[i].style.display = "none";
-                }
+        var rowsPerPage = 5;
+
+        function showRows(page) {
+            var rows = document.getElementById('bookingTable').rows;
+            for (var i = 1; i < rows.length; i++) {
+                rows[i].style.display = (i >= (page * rowsPerPage + 1) && i <= (page * rowsPerPage + rowsPerPage)) ? 'table-row' : 'none';
             }
         }
-    
-        // Event listener for pagination links
-        var paginationLinks = document.querySelectorAll(".pagination a");
-        for (var i = 0; i < paginationLinks.length; i++) {
-            paginationLinks[i].addEventListener("click", function (event) {
-                event.preventDefault();
-                var page = parseInt(this.innerHTML) - 1;
-                showPage(page);
-                updatePaginationLinks(page);
-            });
-        }
-    
-        // Update active pagination link
-        function updatePaginationLinks(page) {
-            for (var i = 0; i < paginationLinks.length; i++) {
-                if (i === page) {
-                    paginationLinks[i].classList.add("active");
-                } else {
-                    paginationLinks[i].classList.remove("active");
-                }
+
+        document.getElementById('prevBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            if (currentPage > 0) {
+                currentPage--;
+                showRows(currentPage);
             }
-        }
-    
-        // Initially show the first page
-        showPage(currentPage);
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            var rows = document.getElementById('bookingTable').rows;
+            if ((currentPage + 1) * rowsPerPage < rows.length - 1) {
+                currentPage++;
+                showRows(currentPage);
+            }
+        });
+
+        // Initial display
+        showRows(currentPage);
     </script>
 </body>
 </html>
 
-
-
-
-
-
-
-
-
-
-
-
-package hyd;
-import java.sql.*;
-import java.util.*;
-public class ilp {
-    static final String JDBC_URL = "jdbc:derby:salesdb;create=true";
- public static void main(String args[]) {
-	 
-    	         try (Connection connection = DriverManager.getConnection(JDBC_URL)) {
-            createTable(connection); // Create the users table if it doesn't exist
-
-            int choice = 0;
-            Scanner sc = new Scanner(System.in); 
-            while (choice != 3) {
-                System.out.println("Welcome to the Ticket Booking System");
-                System.out.println("1. Login");
-                System.out.println("2. Registration");
-                System.out.println("3. Exit");
-                System.out.print("Enter your choice: ");
-                choice = sc.nextInt();
-
-                switch (choice) {
-                    case 1:
-                        login(connection,sc);
-                        break;
-                    case 2:
-                        register(connection,sc);
-                        break;
-                    case 3:
-                        System.out.println("Exiting the system");
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
-                        break;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+--------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------signup--------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Passenger Registration</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #7895CB;
+            font-family: Arial, sans-serif;
         }
-    }
 
-    private static void createTable(Connection connection) throws SQLException {
-        String sql = "CREATE TABLE usertcsssssp2 (id INT, name VARCHAR(255), email VARCHAR(255), password VARCHAR(255), address VARCHAR(255))";
-        try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
+        .card {
+            background-color: #A0BFE0;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
         }
-    }
 
-    private static void login(Connection connection,Scanner sc) throws SQLException {
-        System.out.print("Enter ID: ");
-        int id = sc.nextInt();
-        System.out.print("Enter Password: ");
-        String password = sc.next();
-
-        String sql = "SELECT * FROM users WHERE id = ? AND password = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            statement.setString(2, password);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                System.out.println("Login successful!");
-                int option = 0;
-                while (option != 3) {
-                    System.out.println("1. Book Ticket");
-                    System.out.println("2. View Ticket");
-                    System.out.println("3. Cancel Ticket");
-                    System.out.print("Enter your choice: ");
-                    option = sc.nextInt();
-
-                    switch (option) {
-                        case 1:
-                            System.out.println("Book Ticket");
-                            // Implement the book ticket logic here
-                            break;
-                        case 2:
-                            System.out.println("View Ticket");
-                            // Implement the view ticket logic here
-                            break;
-                        case 3:
-                            System.out.println("Cancel Ticket");
-                            // Implement the cancel ticket logic here
-                            break;
-                        default:
-                            System.out.println("Invalid choice. Please try again.");
-                            break;
-                    }
-                }
-            } else {
-                System.out.println("Invalid ID or password. Please try again.");
-            }
+        .form-group {
+            margin-bottom: 20px;
         }
-    }
 
-    private static void register(Connection connection,Scanner sc) throws SQLException {
-        System.out.print("Enter Name: ");
-        String name = sc.next();
-        System.out.print("Enter Email: ");
-        String email = sc.next();
-        System.out.print("Enter Password: ");
-        String password = sc.next();
-        System.out.print("Enter Address: ");
-        String address = sc.next();
-        int id = generateRandomId();
-
-        String sql = "INSERT INTO users (id, name, email, password, address) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            statement.setString(2, name);
-            statement.setString(3, email);
-            statement.setString(4, password);
-            statement.setString(5, address);
-            statement.executeUpdate();
-            System.out.println(id);
-            System.out.println("Registration successful!");
+        .form-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
         }
-    }
 
-    private static int generateRandomId() {
-        // Generate a random 7-digit number
-        return (int) (Math.random() * 9000000) + 1000000;
-    }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            height: 80px;
+        }
+        .btn {
+          background: #3434d9;
+          background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
+          background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
+          background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
+          background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
+          background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
+          -webkit-border-radius: 21;
+          -moz-border-radius: 21;
+          border-radius: 21px;
+          font-family: Georgia;
+          color: #ffffff;
+          font-size: 20px;
+          padding: 10px 20px 10px 20px;
+          text-decoration: none;
+        }
+        
+        .btn:hover {
+          background: #3cb0fd;
+          background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+          background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+          background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+          background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+          background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+          text-decoration: none;
+        }
+        .acknowledgment {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .acknowledgment h2 {
+            color: green;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+</head>
+<body>
+    <div class="card">
+        <h1>Passenger Registration</h1>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="passengerName">Passenger Name:</label>
+                <input type="text" id="passengerName" maxlength="50" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" maxlength="30" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <textarea id="address" maxlength="100" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="contactNumber">Contact Number:</label>
+              <input type="text" id="contactNumber" maxlength="10" required pattern="[0-9]{10}" title="Please enter a 10-digit number">
+            </div>          
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn">
+            </div>
+        </form>
+        
+        <div class="acknowledgment" id="acknowledgment">
+            <h2>Passenger Registration successful. <i class="bi bi-flag-fill" style="color: green;"></i></h2>
+            <p>Passenger ID: <span id="ackPassengerID"></span></p>
+            <p>Passenger Name: <span id="ackPassengerName"></span></p>
+            <p>Email: <span id="ackEmail"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get the form values
+            var passengerName = document.getElementById('passengerName').value;
+            var email = document.getElementById('email').value;
+
+            // Generate a random passenger ID (for demonstration purposes)
+            var passengerID = generatePassengerID();
+
+            // Show the acknowledgment screen
+            document.getElementById('registrationForm').style.display = 'none';
+            document.getElementById('acknowledgment').style.display = 'block';
+
+            // Display the submitted values
+            document.getElementById('ackPassengerID').textContent = passengerID;
+            document.getElementById('ackPassengerName').textContent = passengerName;
+            document.getElementById('ackEmail').textContent = email;
+        });
+
+        function generatePassengerID() {
+            // Generate a random number between 1000 and 9999
+            return Math.floor(1000 + Math.random() * 9000);
+        }
+    </script>
+</body>
+</html>
+--------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------booking------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Booking</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #7895CB;
+            font-family: Georgia;
+        }
+
+        .card {
+            background-color:#A0BFE0;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background: #3434d9;
+            background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
+            background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
+            background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
+            background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
+            background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
+            -webkit-border-radius: 21;
+            -moz-border-radius: 21;
+            border-radius: 21px;
+            font-family: Georgia;
+            color: #ffffff;
+            font-size: 20px;
+            padding: 10px 20px 10px 20px;
+            text-decoration: none;
+          }
+          
+          .btn:hover {
+            background: #3cb0fd;
+            background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+            text-decoration: none;
+          }
+        .acknowledgment {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .acknowledgment h2 {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Ticket Booking </h1>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="travelDate">Travel Date:</label>
+                <input type="date" id="travelDate" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="source">Source:</label>
+                <input type="text" id="source" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="destination">Destination:</label>
+                <input type="text" id="destination" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" required>
+                    <option value="">Select Status</option>
+                    <option value="New">New</option>
+                    <option value="Confirm">Confirm</option>
+                    <option value="Hold">Hold</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="seatPreference">Seat Preference:</label>
+                <select id="seatPreference">
+                    <option value="">Select Seat Preference</option>
+                    <option value="Window">Window</option>
+                    <option value="Middle">Middle</option>
+                    <option value="Aisle">Aisle</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="mealPreference">Meal Preference:</label>
+                <select id="mealPreference">
+                    <option value="">Select Meal Preference</option>
+                    <option value="Veg">Veg</option>
+                    <option value="Non Veg">Non Veg</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Book Ticket" class="btn">
+            </div>
+        </form>
+        
+        <div class="acknowledgment" id="acknowledgment">
+            <h2>Ticket Booked successfully.</h2>
+            <p>PNR No: <span id="ackPNRNo"></span></p>
+            <p>Travel Date: <span id="ackTravelDate"></span></p>
+            <p>Source Airport: <span id="ackSource"></span></p>
+            <p>Destination Airport: <span id="ackDestination"></span></p>
+            <a class="btn" href="list.html">View List</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get the form values
+            var travelDate = document.getElementById('travelDate').value;
+            var source = document.getElementById('source').value;
+            var destination = document.getElementById('destination').value;
+
+            // Generate a random PNR number
+            var pnrNo = generatePNR();
+
+            // Show the acknowledgment screen
+            document.getElementById('bookingForm').style.display = 'none';
+            document.getElementById('acknowledgment').style.display = 'block';
+
+            // Display the submitted values
+            document.getElementById('ackPNRNo').textContent = pnrNo;
+            document.getElementById('ackTravelDate').textContent = travelDate;
+            document.getElementById('ackSource').textContent = source;
+            document.getElementById('ackDestination').textContent = destination;
+        });
+
+        function generatePNR() {
+            // Generate a random number between 100000 and 999999
+            return Math.floor(100000 + Math.random() * 900000);
+        }
+    </script>
+</body>
+</html>
+--------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------style css----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
+.card {
+  width: 300px;
+  margin: 9% auto;
+  background-color:#A0BFE0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-body button {
+  margin: 0 10px;
+}
+.btn {
+  background: #3434d9;
+  background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
+  background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
+  background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
+  background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
+  background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
+  -webkit-border-radius: 21;
+  -moz-border-radius: 21;
+  border-radius: 21px;
+  font-family: Georgia;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+
+
+  </plaintext>
+</body>
+</html>
