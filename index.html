@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,728 +7,92 @@
 </head>
 <body>
   <plaintext>
-    --------------------------------------------------------------------------------------------------------------------------------------
-    -----------------------------------------------index---------------------------------------------------------------------------------
-    -------------------------------------------------------------------------------------------------------------------------------------
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body bgcolor="blue"> 
-  <div class="card">
-    <img src="https://img.freepik.com/free-vector/flat-travel-background_23-2148047306.jpg?w=2000" alt="Image">
-    <div class="card-body">
-      <a class="btn" href="signup.html">Sign Up</a>
-      <a class="btn" href="signin.html">Sign In</a>
-    </div>
-  </div>
-</body>
-</html>
 
---------------------------------------------------------------------------------------------------------------------------------------
-    -----------------------------------------------signin---------------------------------------------------------------------------------
-    -------------------------------------------------------------------------------------------------------------------------------------
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Login Page </title>
-        <style>
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                background-color: #7895CB;
-                font-family: Georgia;
-            }
-    
-            .card {
-                background-color: #A0BFE0;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                padding: 20px;
-                width: 400px;
-                text-align: center;
-            }
-    
-            .form-group {
-                margin-bottom: 20px;
-            }
-    
-            .form-group label {
-                display: block;
-                text-align: left;
-                margin-bottom: 5px;
-            }
-    
-            .form-group input[type="text"],
-            .form-group input[type="password"] {
-                width: 100%;
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            .btn {
-                background: #3434d9;
-                background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
-                background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
-                background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
-                background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
-                background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
-                -webkit-border-radius: 21;
-                -moz-border-radius: 21;
-                border-radius: 21px;
-                font-family: Georgia;
-                color: #ffffff;
-                font-size: 20px;
-                padding: 10px 20px 10px 20px;
-                text-decoration: none;
-              }
-              
-              .btn:hover {
-                background: #3cb0fd;
-                background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-                background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-                background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-                background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-                background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-                text-decoration: none;
-              }
-        </style>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    </head>
-    <body>
-        <div class="card">
-            <h1>Login <i class="bi bi-person-circle" style="color: brown;"></i></h1>
-            <form id="loginForm" onsubmit="login(event)">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" required>
-                </div>
-                
-                <div class="form-group">
-                    <input type="submit" value="Submit" class="btn">
-                </div>
-            </form>
-        </div>
-        <script>
-            function login(event) {
-                event.preventDefault();
-        
-                // Get the form values
-                var name = document.getElementById('name').value;
-                var password = document.getElementById('password').value;
-        
-                // Perform login validation (dummy validation for demonstration)
-                if (name === 'admin' && password === 'password') {
-                    // Redirect to booking.html
-                    window.location.href = 'booking.html';
-                } else {
-                    alert('Login failed! Please check your credentials.');
-                }
-            }
-        </script>
-    </body>
-    </html>
-    
-    --------------------------------------------------------------------------------------------------------------------------------------
-    -----------------------------------------------list---------------------------------------------------------------------------------
-    -------------------------------------------------------------------------------------------------------------------------------------
-    <!DOCTYPE html>
-<html>
-<head>
-    <title>Booking Details</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #7895CB;
-            font-family: Georgia;
-        }
+    import requests
 
-        .card {
-            background-color: #A0BFE0;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 600px;
-            text-align: center;
-            color: #333;
-        }
+def get_access_token(client_id, client_secret,tenant_id,scope):
+    token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"  
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    body = {
+        "grant_type": "client_credentials",
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "scope": scope
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            padding: 8px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        th {
-            background-color: #7895CB;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .pagination a {
-            display: inline-block;
-            padding: 8px;
-            background-color: #4CAF50;
-            color: #fff;
-            text-decoration: none;
-            margin: 0 5px;
-            border-radius: 4px;
-        }
-
-        .pagination a:hover {
-            background-color: #45a049;
-        }
-        .btn {
-            background: #3434d9;
-            background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
-            background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
-            background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
-            background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
-            background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
-            -webkit-border-radius: 21;
-            -moz-border-radius: 21;
-            border-radius: 21px;
-            font-family: Georgia;
-            color: #ffffff;
-            font-size: 20px;
-            padding: 10px 20px 10px 20px;
-            text-decoration: none;
-          }
-          
-          .btn:hover {
-            background: #3cb0fd;
-            background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-            background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-            background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-            background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-            background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-            text-decoration: none;
-          }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h1>Booking Details</h1>
-        <table id="bookingTable">
-            <tr>
-                <th>PNR NO</th>
-                <th>Travel Date</th>
-                <th>Source</th>
-                <th>Destination</th>
-                <th>Seat Preference</th>
-                <th>Meal Preference</th>
-            </tr>
-            <tr>
-                <td>PNR1</td>
-                <td>2023-07-10</td>
-                <td>Source1</td>
-                <td>Destination1</td>
-                <td>Window</td>
-                <td>Veg</td>
-            </tr>
-            <tr>
-                <td>PNR2</td>
-                <td>2023-07-11</td>
-                <td>Source2</td>
-                <td>Destination2</td>
-                <td>Middle</td>
-                <td>Non Veg</td>
-            </tr>
-            <tr>
-                <td>PNR3</td>
-                <td>2023-07-12</td>
-                <td>Source3</td>
-                <td>Destination3</td>
-                <td>Aisle</td>
-                <td>Veg</td>
-            </tr>
-            <tr>
-                <td>PNR4</td>
-                <td>2023-07-13</td>
-                <td>Source4</td>
-                <td>Destination4</td>
-                <td>Window</td>
-                <td>Veg</td>
-            </tr>
-            <tr>
-                <td>PNR5</td>
-                <td>2023-07-14</td>
-                <td>Source5</td>
-                <td>Destination5</td>
-                <td>Middle</td>
-                <td>Non Veg</td>
-            </tr>
-            <tr>
-                <td>PNR6</td>
-                <td>2023-07-15</td>
-                <td>Source6</td>
-                <td>Destination6</td>
-                <td>Window</td>
-                <td>Veg</td>
-            </tr>
-            <tr>
-                <td>PNR7</td>
-                <td>2023-07-16</td>
-                <td>Source7</td>
-                <td>Destination7</td>
-                <td>Middle</td>
-                <td>Non Veg</td>
-            </tr>
-            <tr>
-                <td>PNR8</td>
-                <td>2023-07-17</td>
-                <td>Source8</td>
-                <td>Destination8</td>
-                <td>Aisle</td>
-                <td>Veg</td>
-            </tr>
-        </table>
-        <div class="pagination">
-            <a href="#" class="btn" id="prevBtn">Prev</a>
-            <a href="#" class="btn" id="nextBtn">Next</a>
-        </div>
-    </div>
-
-    <script>
-        var currentPage = 0;
-        var rowsPerPage = 5;
-
-        function showRows(page) {
-            var rows = document.getElementById('bookingTable').rows;
-            for (var i = 1; i < rows.length; i++) {
-                rows[i].style.display = (i >= (page * rowsPerPage + 1) && i <= (page * rowsPerPage + rowsPerPage)) ? 'table-row' : 'none';
-            }
-        }
-
-        document.getElementById('prevBtn').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (currentPage > 0) {
-                currentPage--;
-                showRows(currentPage);
-            }
-        });
-
-        document.getElementById('nextBtn').addEventListener('click', function(event) {
-            event.preventDefault();
-            var rows = document.getElementById('bookingTable').rows;
-            if ((currentPage + 1) * rowsPerPage < rows.length - 1) {
-                currentPage++;
-                showRows(currentPage);
-            }
-        });
-
-        // Initial display
-        showRows(currentPage);
-    </script>
-</body>
-</html>
-
---------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------signup--------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Passenger Registration</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #7895CB;
-            font-family: Arial, sans-serif;
-        }
-
-        .card {
-            background-color: #A0BFE0;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 400px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            text-align: left;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .form-group textarea {
-            height: 80px;
-        }
-        .btn {
-          background: #3434d9;
-          background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
-          background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
-          background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
-          background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
-          background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
-          -webkit-border-radius: 21;
-          -moz-border-radius: 21;
-          border-radius: 21px;
-          font-family: Georgia;
-          color: #ffffff;
-          font-size: 20px;
-          padding: 10px 20px 10px 20px;
-          text-decoration: none;
-        }
-        
-        .btn:hover {
-          background: #3cb0fd;
-          background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-          background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-          background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-          background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-          background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-          text-decoration: none;
-        }
-        .acknowledgment {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .acknowledgment h2 {
-            color: green;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-</head>
-<body>
-    <div class="card">
-        <h1>Passenger Registration</h1>
-        <form id="registrationForm">
-            <div class="form-group">
-                <label for="passengerName">Passenger Name:</label>
-                <input type="text" id="passengerName" maxlength="50" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" maxlength="30" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="address">Address:</label>
-                <textarea id="address" maxlength="100" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="contactNumber">Contact Number:</label>
-              <input type="text" id="contactNumber" maxlength="10" required pattern="[0-9]{10}" title="Please enter a 10-digit number">
-            </div>          
-            <div class="form-group">
-                <input type="submit" value="Register" class="btn">
-            </div>
-        </form>
-        
-        <div class="acknowledgment" id="acknowledgment">
-            <h2>Passenger Registration successful. <i class="bi bi-flag-fill" style="color: green;"></i></h2>
-            <p>Passenger ID: <span id="ackPassengerID"></span></p>
-            <p>Passenger Name: <span id="ackPassengerName"></span></p>
-            <p>Email: <span id="ackEmail"></span></p>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            // Get the form values
-            var passengerName = document.getElementById('passengerName').value;
-            var email = document.getElementById('email').value;
-
-            // Generate a random passenger ID (for demonstration purposes)
-            var passengerID = generatePassengerID();
-
-            // Show the acknowledgment screen
-            document.getElementById('registrationForm').style.display = 'none';
-            document.getElementById('acknowledgment').style.display = 'block';
-
-            // Display the submitted values
-            document.getElementById('ackPassengerID').textContent = passengerID;
-            document.getElementById('ackPassengerName').textContent = passengerName;
-            document.getElementById('ackEmail').textContent = email;
-        });
-
-        function generatePassengerID() {
-            // Generate a random number between 1000 and 9999
-            return Math.floor(1000 + Math.random() * 9000);
-        }
-    </script>
-</body>
-</html>
---------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------booking------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Ticket Booking</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #7895CB;
-            font-family: Georgia;
-        }
-
-        .card {
-            background-color:#A0BFE0;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 400px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            text-align: left;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .btn {
-            background: #3434d9;
-            background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
-            background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
-            background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
-            background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
-            background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
-            -webkit-border-radius: 21;
-            -moz-border-radius: 21;
-            border-radius: 21px;
-            font-family: Georgia;
-            color: #ffffff;
-            font-size: 20px;
-            padding: 10px 20px 10px 20px;
-            text-decoration: none;
-          }
-          
-          .btn:hover {
-            background: #3cb0fd;
-            background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-            background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-            background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-            background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-            background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-            text-decoration: none;
-          }
-        .acknowledgment {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .acknowledgment h2 {
-            color: green;
-        }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h1>Ticket Booking </h1>
-        <form id="bookingForm">
-            <div class="form-group">
-                <label for="travelDate">Travel Date:</label>
-                <input type="date" id="travelDate" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="source">Source:</label>
-                <input type="text" id="source" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="destination">Destination:</label>
-                <input type="text" id="destination" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="status">Status:</label>
-                <select id="status" required>
-                    <option value="">Select Status</option>
-                    <option value="New">New</option>
-                    <option value="Confirm">Confirm</option>
-                    <option value="Hold">Hold</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="seatPreference">Seat Preference:</label>
-                <select id="seatPreference">
-                    <option value="">Select Seat Preference</option>
-                    <option value="Window">Window</option>
-                    <option value="Middle">Middle</option>
-                    <option value="Aisle">Aisle</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="mealPreference">Meal Preference:</label>
-                <select id="mealPreference">
-                    <option value="">Select Meal Preference</option>
-                    <option value="Veg">Veg</option>
-                    <option value="Non Veg">Non Veg</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Book Ticket" class="btn">
-            </div>
-        </form>
-        
-        <div class="acknowledgment" id="acknowledgment">
-            <h2>Ticket Booked successfully.</h2>
-            <p>PNR No: <span id="ackPNRNo"></span></p>
-            <p>Travel Date: <span id="ackTravelDate"></span></p>
-            <p>Source Airport: <span id="ackSource"></span></p>
-            <p>Destination Airport: <span id="ackDestination"></span></p>
-            <a class="btn" href="list.html">View List</a>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('bookingForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            // Get the form values
-            var travelDate = document.getElementById('travelDate').value;
-            var source = document.getElementById('source').value;
-            var destination = document.getElementById('destination').value;
-
-            // Generate a random PNR number
-            var pnrNo = generatePNR();
-
-            // Show the acknowledgment screen
-            document.getElementById('bookingForm').style.display = 'none';
-            document.getElementById('acknowledgment').style.display = 'block';
-
-            // Display the submitted values
-            document.getElementById('ackPNRNo').textContent = pnrNo;
-            document.getElementById('ackTravelDate').textContent = travelDate;
-            document.getElementById('ackSource').textContent = source;
-            document.getElementById('ackDestination').textContent = destination;
-        });
-
-        function generatePNR() {
-            // Generate a random number between 100000 and 999999
-            return Math.floor(100000 + Math.random() * 900000);
-        }
-    </script>
-</body>
-</html>
---------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------style css----------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------
-.card {
-  width: 300px;
-  margin: 9% auto;
-  background-color:#A0BFE0;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.card img {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.card-body {
-  display: flex;
-  justify-content: space-between;
-}
-
-.card-body button {
-  margin: 0 10px;
-}
-.btn {
-  background: #3434d9;
-  background-image: -webkit-linear-gradient(top, #3434d9, #2b50b8);
-  background-image: -moz-linear-gradient(top, #3434d9, #2b50b8);
-  background-image: -ms-linear-gradient(top, #3434d9, #2b50b8);
-  background-image: -o-linear-gradient(top, #3434d9, #2b50b8);
-  background-image: linear-gradient(to bottom, #3434d9, #2b50b8);
-  -webkit-border-radius: 21;
-  -moz-border-radius: 21;
-  border-radius: 21px;
-  font-family: Georgia;
-  color: #ffffff;
-  font-size: 20px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-}
-
-.btn:hover {
-  background: #3cb0fd;
-  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-  text-decoration: none;
-}
+    response = requests.post(token_url, headers=headers, data=body)
+    if response.status_code == 200:
+          response_json = response.json()
+          access_token = response_json.get("access_token")
+          return access_token
+    else:
+        print(f"Failed to obtain access token. Status code: {response.status_code}")
+        print(response.text)
+        return None
 
 
+
+def call_costdetails_api(access_token,subscription_id,start_date,end_date):
+  api_url = f"https://management.azure.com/subscriptions/{subscription_id}/providers/Microsoft.CostManagement/generateCostDetailsReport?api-version=2023-11-01"
+  headers = {
+      "Authorization": f"Bearer {access_token}",
+      "Content-Type": "application/json"
+  }
+  body_data = {
+      "timeperiod": {
+          "start": start_date,
+          "end": end_date
+      }
+  }
+  response = requests.post(api_url, headers=headers, json=body_data)
+  location = ""
+  if response.status_code == 202:
+      location = response.headers.get("location")
+  elif response.status_code == 200:
+      response_json = response.json()
+      location = response_json.get("location")
+  else:
+      print(f"Request failed with status code {response.status_code}")
+      print(response.text)
+  return location
+
+
+
+def get_bloblink(access_token,location):
+  location_headers = {
+          "Authorization": f"Bearer {access_token}"
+      }
+  location_response = requests.get(location, headers=location_headers) 
+  blob_link=""
+  if location_response.status_code in [200] :
+    blob_link = location_response.json().get('manifest', {}).get('blobs', [])[0].get('blobLink')
+  else:
+    print(f"GET request to location URL failed with status code {location_response.status_code}")
+    print(location_response.text)
+  return blob_link
+
+
+
+
+# Our actual details
+client_id = ""
+client_secret = ""
+tenant_id=""
+subscription_id = ""
+scope = "https://management.azure.com/.default"
+start_date=""
+end_date=""
+
+access_token = get_access_token(client_id, client_secret,tenant_id,scope)
+location=call_costdetails_api(access_token,subscription_id,start_date,end_date)
+blob_link=get_bloblink(access_token,location)
+
+print(f"Blob Link: {blob_link}")
+
+
+      
 
   </plaintext>
 </body>
