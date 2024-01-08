@@ -7,90 +7,61 @@
 </head>
 <body>
   <plaintext>
+from flask import Flask, request, jsonify
+import json
+import traceback
+import openai
+from flask_cors import CORS
 
-    import requests
+app = Flask(__name__)
+CORS(app)
 
-def get_access_token(client_id, client_secret,tenant_id,scope):
-    token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"  
-    headers = {
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
-    body = {
-        "grant_type": "client_credentials",
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "scope": scope
-    }
+@app.route('/clinicalSummary', methods=['POST'])
+def clinicalSummary():
+    try:
+        received_json = request.json
+        received_id = received_json['id']
 
-    response = requests.post(token_url, headers=headers, data=body)
-    if response.status_code == 200:
-          response_json = response.json()
-          access_token = response_json.get("access_token")
-          return access_token
-    else:
-        print(f"Failed to obtain access token. Status code: {response.status_code}")
-        print(response.text)
-        return None
+        file_name = "testtoken.txt"
+        with open(file_name, 'r') as file:
+            lines_in_file = file.read()
 
+        test = received_id + lines_in_file
 
+        result = openai.ChatCompletion.create(
+            engine="HomecareSummary",
+            messages=[{"role": "user", "content": test}]
+        )['choices'][0]['message']['content']
 
-def call_costdetails_api(access_token,subscription_id,start_date,end_date):
-  api_url = f"https://management.azure.com/subscriptions/{subscription_id}/providers/Microsoft.CostManagement/generateCostDetailsReport?api-version=2023-11-01"
-  headers = {
-      "Authorization": f"Bearer {access_token}",
-      "Content-Type": "application/json"
-  }
-  body_data = {
-      "timeperiod": {
-          "start": start_date,
-          "end": end_date
-      }
-  }
-  response = requests.post(api_url, headers=headers, json=body_data)
-  location = ""
-  if response.status_code == 202:
-      location = response.headers.get("location")
-  elif response.status_code == 200:
-      response_json = response.json()
-      location = response_json.get("location")
-  else:
-      print(f"Request failed with status code {response.status_code}")
-      print(response.text)
-  return location
+        return jsonify({'responseMessage': result})
+    except Exception as e:
+        return jsonify({'trace': traceback.format_exc()}), 500
 
+@app.route('/conversationSummary', methods=['POST'])
+def conversationSummary():
+    try:
+        received_json = request.json
+        received_command = received_json["command"]
+        received_conversation = received_json['conversation']
 
+        test = received_command + '\n' + received_conversation
 
-def get_bloblink(access_token,location):
-  location_headers = {
-          "Authorization": f"Bearer {access_token}"
-      }
-  location_response = requests.get(location, headers=location_headers) 
-  blob_link=""
-  if location_response.status_code in [200] :
-    blob_link = location_response.json().get('manifest', {}).get('blobs', [])[0].get('blobLink')
-  else:
-    print(f"GET request to location URL failed with status code {location_response.status_code}")
-    print(location_response.text)
-  return blob_link
+        result = openai.ChatCompletion.create(
+            engine="HomecareSummary",
+            messages=[{"role": "user", "content": test}]
+        )['choices'][0]['message']['content']
 
+        return jsonify({'responseMessage': result})
+    except Exception as e:
+        return jsonify({'trace': traceback.format_exc()}), 500
 
-
-
-# Our actual details
-client_id = ""
-client_secret = ""
-tenant_id=""
-subscription_id = ""
-scope = "https://management.azure.com/.default"
-start_date=""
-end_date=""
-
-access_token = get_access_token(client_id, client_secret,tenant_id,scope)
-location=call_costdetails_api(access_token,subscription_id,start_date,end_date)
-blob_link=get_bloblink(access_token,location)
-
-print(f"Blob Link: {blob_link}")
-
+if __name__ == '__main__':
+    openai.api_key = 'your_openai_api_key'
+    openai.api_type = "azure"
+    openai.api_base = "https://homecare.openai.azure.com/"
+    openai.api_version = "2023-07-01-preview"
+    
+    app.run(port=5000, host='0.0.0.0')
 
       
 
