@@ -7,63 +7,221 @@
 </head>
 <body>
   <plaintext>
-from flask import Flask, request, jsonify
-import json
-import traceback
-import openai
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
+import pandas as pd
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/clinicalSummary', methods=['POST'])
-def clinicalSummary():
-    try:
-        received_json = request.json
-        received_id = received_json['id']
+# Set the upload folder
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-        file_name = "testtoken.txt"
-        with open(file_name, 'r') as file:
-            lines_in_file = file.read()
+# Define allowed file extensions
+ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
 
-        test = received_id + lines_in_file
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-        result = openai.ChatCompletion.create(
-            engine="HomecareSummary",
-            messages=[{"role": "user", "content": test}]
-        )['choices'][0]['message']['content']
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-        return jsonify({'responseMessage': result})
-    except Exception as e:
-        return jsonify({'trace': traceback.format_exc()}), 500
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'})
 
-@app.route('/conversationSummary', methods=['POST'])
-def conversationSummary():
-    try:
-        received_json = request.json
-        received_command = received_json["command"]
-        received_conversation = received_json['conversation']
+    file = request.files['file']
 
-        test = received_command + '\n' + received_conversation
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'})
 
-        result = openai.ChatCompletion.create(
-            engine="HomecareSummary",
-            messages=[{"role": "user", "content": test}]
-        )['choices'][0]['message']['content']
+    # Create the 'uploads' directory if it doesn't exist
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
 
-        return jsonify({'responseMessage': result})
-    except Exception as e:
-        return jsonify({'trace': traceback.format_exc()}), 500
+    if file and allowed_file(file.filename):
+        # Save the uploaded file
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(filename)
 
+        # Perform basic operations (here, just read and save the same file)
+        df = pd.read_excel(filename)
+        data = df.to_dict(orient='records')
+
+        return jsonify({'success': True, 'data': data})
+
+    else:
+        return jsonify({'error': 'Invalid file extension'})
 if __name__ == '__main__':
-    openai.api_key = 'your_openai_api_key'
-    openai.api_type = "azure"
-    openai.api_base = "https://homecare.openai.azure.com/"
-    openai.api_version = "2023-07-01-preview"
-    
-    app.run(port=5000, host='0.0.0.0')
+    app.run(debug=True)
 
-      
+
+
+
+
+
+    import pandas as pd
+import openai
+
+# Set your OpenAI GPT API key
+openai.api_key = 'YOUR_OPENAI_API_KEY'
+
+# Function to generate test cases for a given use case
+def generate_test_cases(use_case):
+    prompt = f"generate all possible test cases for the above use case: {use_case} with columns test case id , test case description , precondition , postcondition, action, response, test case type , test case priority, complexity in table format"
+
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        temperature=0.7,
+        max_tokens=200,
+        n=1
+    )
+
+    return response.choices[0].text.strip()
+
+# Read the Excel file
+excel_file_path = 'path/to/your/input_excel.xlsx'
+df = pd.read_excel(excel_file_path)
+
+# Iterate through rows and generate test cases
+for index, row in df.iterrows():
+    use_case = row['use case']
+    test_cases_output = generate_test_cases(use_case)
+
+    # Update the DataFrame with the generated test cases
+    df.at[index, 'test_cases'] = test_cases_output
+
+# Save the DataFrame with the generated test cases to a new Excel file
+output_excel_file_path = 'path/to/your/output_excel.xlsx'
+df.to_excel(output_excel_file_path, index=False)
+
+
+
+
+
+function uploadFile() {
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+
+    if (!file) {
+        document.getElementById('message').innerHTML = 'Please select a file.';
+        return;
+    }
+
+    var formData = new FormData();
+    formData.append('file', file);
+
+    fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('message').innerHTML = 'File processed successfully.';
+            displayTable(data.data);
+        } else {
+            document.getElementById('message').innerHTML = 'Error: ' + data.error;
+        }
+    })
+    .catch(error => {
+        document.getElementById('message').innerHTML = 'Error: ' + error.message;
+    });
+}
+
+function displayTable(data) {
+    var tableContainer = document.getElementById('tableContainer');
+    tableContainer.innerHTML = '';
+
+    if (data.length > 0) {
+        var table = document.createElement('table');
+        var header = table.createTHead();
+        var row = header.insertRow(0);
+
+        // Create header cells
+        for (var key in data[0]) {
+            var th = document.createElement('th');
+            th.textContent = key;
+            row.appendChild(th);
+        }
+
+        // Create data cells
+        for (var i = 0; i < data.length; i++) {
+            var row = table.insertRow(i + 1);
+
+            for (var key in data[i]) {
+                var cell = row.insertCell();
+                cell.textContent = data[i][key];
+            }
+        }
+
+        tableContainer.appendChild(table);
+    } else {
+        tableContainer.innerHTML = 'No data to display.';
+    }
+}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel File Operations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Upload an Excel file</h1>
+    <input type="file" id="fileInput" accept=".xlsx, .xls" required>
+    <button onclick="uploadFile()">Upload</button>
+    <p id="message"></p>
+
+    <div id="tableContainer"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #333;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#message {
+    margin-top: 10px;
+    color: #333;
+}
+
 
   </plaintext>
 </body>
