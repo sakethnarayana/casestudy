@@ -8,152 +8,54 @@
 <body>
   <plaintext>
 
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patient Details</title>
-  <style>
-    /* Add your styles for the page here */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    
-    #sidebar {
-      width: 250px;
-      height: 100vh;
-      background-color: #333;
-      color: #fff;
-      position: fixed;
-      top: 0;
-      left: -250px;
-      transition: left 0.3s ease;
-    }
-
-    #content {
-      margin-left: 250px;
-      padding: 20px;
-    }
-
-    .menu-icon {
-      cursor: pointer;
-      font-size: 24px;
-      padding: 20px;
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 1;
-    }
-
-    .patient-details {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .patient-details label {
-      width: 200px;
-      margin-right: 10px;
-    }
-
-    .patient-details input, .patient-details textarea {
-      flex: 1;
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-
-    #save-btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel File Operations</title>
 </head>
 <body>
+    <h1>Grievance Review</h1>
+    <button onclick="getDetails()">Get Details</button>
+    <table id="detailsTable">
+        <!-- Table headers will be added dynamically -->
+    </table>
 
-  <div id="sidebar">
-    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
-    <ul>
-      <li><a href="#">Dashboard</a></li>
-      <li><a href="#">Reports</a></li>
-      <li><a href="#">Trends</a></li>
-      <li><a href="#">Configuration</a></li>
-    </ul>
-  </div>
+    <script>
+        function getDetails() {
+            fetch('http://localhost:5000/details')
+                .then(response => response.json())
+                .then(data => displayTable(data));
+        }
 
-  <div id="content">
-    <div class="patient-details">
-      <label>Call Template:</label>
-      <input type="text">
+        function displayTable(data) {
+            const table = document.getElementById('detailsTable');
+            // Clear existing table contents
+            table.innerHTML = '';
 
-      <label>Name:</label>
-      <input type="text" id="name">
+            // Create table headers
+            const headers = Object.keys(data[0]);
+            const headerRow = table.insertRow();
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
 
-      <label>Member ID:</label>
-      <input type="text" id="member-id">
-
-      <label>Phone:</label>
-      <input type="tel" id="phone">
-
-      <label>Email:</label>
-      <input type="email" id="email">
-
-      <label>Date of Service:</label>
-      <input type="date" id="date-of-service">
-
-      <label>Provider Name:</label>
-      <input type="text" id="provider-name">
-
-      <label>Medical Issue:</label>
-      <textarea id="medical-issue"></textarea>
-
-      <label>Complain:</label>
-      <input type="text" id="complain">
-
-      <label>Description:</label>
-      <textarea id="description"></textarea>
-
-      <label>Date of Filling:</label>
-      <input type="date" id="date-of-filling">
-
-      <label>GDR Name:</label>
-      <input type="text" id="gdr-name">
-
-      <label>Grievance:</label>
-      <input type="text" id="grievance">
-
-      <label>Review Date:</label>
-      <input type="date" id="review-date">
-
-      <label>Summary:</label>
-      <textarea id="summary"></textarea>
-
-      <label for="send-feedback">Send Feedback</label>
-      <input type="checkbox" id="send-feedback">
-
-      <button id="save-btn" onclick="savePatientDetails()">Save</button>
-    </div>
-  </div>
-
-  <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
-    }
-
-    function savePatientDetails() {
-      // Add logic to save patient details here
-      alert('Patient details saved!');
-    }
-  </script>
+            // Populate table with data
+            data.forEach(item => {
+                const row = table.insertRow();
+                headers.forEach(header => {
+                    const cell = row.insertCell();
+                    cell.textContent = item[header];
+                });
+            });
+        }
+    </script>
 </body>
 </html>
-    
 
 
 
