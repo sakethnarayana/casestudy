@@ -7,220 +7,154 @@
 </head>
 <body>
   <plaintext>
-from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
-import pandas as pd
-import os
-
-app = Flask(__name__)
-CORS(app)
-
-# Set the upload folder
-UPLOAD_FOLDER = 'uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# Define allowed file extensions
-ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/upload', methods=['POST'])
-def upload():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'})
-
-    file = request.files['file']
-
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'})
-
-    # Create the 'uploads' directory if it doesn't exist
-    if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        os.makedirs(app.config['UPLOAD_FOLDER'])
-
-    if file and allowed_file(file.filename):
-        # Save the uploaded file
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filename)
-
-        # Perform basic operations (here, just read and save the same file)
-        df = pd.read_excel(filename)
-        data = df.to_dict(orient='records')
-
-        return jsonify({'success': True, 'data': data})
-
-    else:
-        return jsonify({'error': 'Invalid file extension'})
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
-
-
-
-
-    import pandas as pd
-import openai
-
-# Set your OpenAI GPT API key
-openai.api_key = 'YOUR_OPENAI_API_KEY'
-
-# Function to generate test cases for a given use case
-def generate_test_cases(use_case):
-    prompt = f"generate all possible test cases for the above use case: {use_case} with columns test case id , test case description , precondition , postcondition, action, response, test case type , test case priority, complexity in table format"
-
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        temperature=0.7,
-        max_tokens=200,
-        n=1
-    )
-
-    return response.choices[0].text.strip()
-
-# Read the Excel file
-excel_file_path = 'path/to/your/input_excel.xlsx'
-df = pd.read_excel(excel_file_path)
-
-# Iterate through rows and generate test cases
-for index, row in df.iterrows():
-    use_case = row['use case']
-    test_cases_output = generate_test_cases(use_case)
-
-    # Update the DataFrame with the generated test cases
-    df.at[index, 'test_cases'] = test_cases_output
-
-# Save the DataFrame with the generated test cases to a new Excel file
-output_excel_file_path = 'path/to/your/output_excel.xlsx'
-df.to_excel(output_excel_file_path, index=False)
-
-
-
-
-
-function uploadFile() {
-    var fileInput = document.getElementById('fileInput');
-    var file = fileInput.files[0];
-
-    if (!file) {
-        document.getElementById('message').innerHTML = 'Please select a file.';
-        return;
-    }
-
-    var formData = new FormData();
-    formData.append('file', file);
-
-    fetch('http://localhost:5000/upload', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            document.getElementById('message').innerHTML = 'File processed successfully.';
-            displayTable(data.data);
-        } else {
-            document.getElementById('message').innerHTML = 'Error: ' + data.error;
-        }
-    })
-    .catch(error => {
-        document.getElementById('message').innerHTML = 'Error: ' + error.message;
-    });
-}
-
-function displayTable(data) {
-    var tableContainer = document.getElementById('tableContainer');
-    tableContainer.innerHTML = '';
-
-    if (data.length > 0) {
-        var table = document.createElement('table');
-        var header = table.createTHead();
-        var row = header.insertRow(0);
-
-        // Create header cells
-        for (var key in data[0]) {
-            var th = document.createElement('th');
-            th.textContent = key;
-            row.appendChild(th);
-        }
-
-        // Create data cells
-        for (var i = 0; i < data.length; i++) {
-            var row = table.insertRow(i + 1);
-
-            for (var key in data[i]) {
-                var cell = row.insertCell();
-                cell.textContent = data[i][key];
-            }
-        }
-
-        tableContainer.appendChild(table);
-    } else {
-        tableContainer.innerHTML = 'No data to display.';
-    }
-}
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel File Operations</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Details</title>
+  <style>
+    /* Add your styles for the page here */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    #sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #333;
+      color: #fff;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      transition: left 0.3s ease;
+    }
+
+    #content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .menu-icon {
+      cursor: pointer;
+      font-size: 24px;
+      padding: 20px;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+    }
+
+    .patient-details {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .patient-details label {
+      width: 200px;
+      margin-right: 10px;
+    }
+
+    .patient-details input, .patient-details textarea {
+      flex: 1;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    #save-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <h1>Upload an Excel file</h1>
-    <input type="file" id="fileInput" accept=".xlsx, .xls" required>
-    <button onclick="uploadFile()">Upload</button>
-    <p id="message"></p>
 
-    <div id="tableContainer"></div>
+  <div id="sidebar">
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Reports</a></li>
+      <li><a href="#">Trends</a></li>
+      <li><a href="#">Configuration</a></li>
+    </ul>
+  </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <div id="content">
+    <div class="patient-details">
+      <label>Call Template:</label>
+      <input type="text">
+
+      <label>Name:</label>
+      <input type="text" id="name">
+
+      <label>Member ID:</label>
+      <input type="text" id="member-id">
+
+      <label>Phone:</label>
+      <input type="tel" id="phone">
+
+      <label>Email:</label>
+      <input type="email" id="email">
+
+      <label>Date of Service:</label>
+      <input type="date" id="date-of-service">
+
+      <label>Provider Name:</label>
+      <input type="text" id="provider-name">
+
+      <label>Medical Issue:</label>
+      <textarea id="medical-issue"></textarea>
+
+      <label>Complain:</label>
+      <input type="text" id="complain">
+
+      <label>Description:</label>
+      <textarea id="description"></textarea>
+
+      <label>Date of Filling:</label>
+      <input type="date" id="date-of-filling">
+
+      <label>GDR Name:</label>
+      <input type="text" id="gdr-name">
+
+      <label>Grievance:</label>
+      <input type="text" id="grievance">
+
+      <label>Review Date:</label>
+      <input type="date" id="review-date">
+
+      <label>Summary:</label>
+      <textarea id="summary"></textarea>
+
+      <label for="send-feedback">Send Feedback</label>
+      <input type="checkbox" id="send-feedback">
+
+      <button id="save-btn" onclick="savePatientDetails()">Save</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
+    }
+
+    function savePatientDetails() {
+      // Add logic to save patient details here
+      alert('Patient details saved!');
+    }
+  </script>
 </body>
 </html>
+    
 
-
-
-
-
-body {
-    font-family: Arial, sans-serif;
-}
-
-h1 {
-    color: #333;
-}
-
-input {
-    margin-bottom: 10px;
-}
-
-button {
-    padding: 8px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-#message {
-    margin-top: 10px;
-    color: #333;
-}
 
 
   </plaintext>
