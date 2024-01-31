@@ -7,8 +7,7 @@
 </head>
 <body>
   <plaintext>
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -32,23 +31,26 @@
       outline: 2px solid #4CAF50; /* Added outline */
     }
 
-    .patient-form label {
-      display: block;
-      margin-bottom: 5px;
+    .form-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 10px;
+    }
+
+    .form-row label {
+      width: 200px;
+      margin: auto 0;
       font-size: 16px;
     }
 
-    .patient-form input, .patient-form textarea {
-      width: calc(100% - 22px);
+    .form-row input,
+    .form-row textarea,
+    .form-row checkbox {
+      flex: 1;
       padding: 8px;
-      margin-bottom: 10px;
       font-size: 16px;
       border: 1px solid #ddd;
       border-radius: 3px;
-    }
-
-    .patient-form textarea {
-      resize: vertical;
     }
 
     .feedback-options {
@@ -59,7 +61,7 @@
     }
 
     .feedback-options textarea {
-      width: calc(100% - 22px);
+      width: calc(50% - 22px);
       padding: 8px;
       font-size: 16px;
       border: 1px solid #ddd;
@@ -69,7 +71,6 @@
 
     .feedback-options label {
       font-size: 16px;
-      margin-right: 10px;
     }
 
     .feedback-options button {
@@ -86,50 +87,80 @@
 <body>
 
   <div class="patient-form">
-    <label>Call Template:</label>
-    <input type="text" id="call-template">
+    <div class="form-row">
+      <label>Call Template:</label>
+      <input type="text" id="call-template">
+    </div>
 
-    <label>Name:</label>
-    <input type="text" id="name">
+    <div class="form-row">
+      <label>Name:</label>
+      <input type="text" id="name">
+    </div>
 
-    <label>Member ID:</label>
-    <input type="text" id="member-id">
+    <div class="form-row">
+      <label>Member ID:</label>
+      <input type="text" id="member-id">
+    </div>
 
-    <label>Phone:</label>
-    <input type="tel" id="phone">
+    <div class="form-row">
+      <label>Phone:</label>
+      <input type="tel" id="phone">
+    </div>
 
-    <label>Email:</label>
-    <input type="email" id="email">
+    <div class="form-row">
+      <label>Email:</label>
+      <input type="email" id="email">
+    </div>
 
-    <label>Date of Service:</label>
-    <input type="date" id="date-of-service">
+    <div class="form-row">
+      <label>Date of Service:</label>
+      <input type="date" id="date-of-service">
+    </div>
 
-    <label>Provider Name:</label>
-    <input type="text" id="provider-name">
+    <div class="form-row">
+      <label>Provider Name:</label>
+      <input type="text" id="provider-name">
+    </div>
 
-    <label>Medical Issue:</label>
-    <textarea id="medical-issue"></textarea>
+    <div class="form-row">
+      <label>Medical Issue:</label>
+      <textarea id="medical-issue"></textarea>
+    </div>
 
-    <label>Complain:</label>
-    <input type="text" id="complain">
+    <div class="form-row">
+      <label>Complain:</label>
+      <input type="text" id="complain">
+    </div>
 
-    <label>Description:</label>
-    <textarea id="description"></textarea>
+    <div class="form-row">
+      <label>Description:</label>
+      <textarea id="description"></textarea>
+    </div>
 
-    <label>Date of Filling:</label>
-    <input type="date" id="date-of-filling">
+    <div class="form-row">
+      <label>Date of Filling:</label>
+      <input type="date" id="date-of-filling">
+    </div>
 
-    <label>GDR Name:</label>
-    <input type="text" id="gdr-name">
+    <div class="form-row">
+      <label>GDR Name:</label>
+      <input type="text" id="gdr-name">
+    </div>
 
-    <label>Grievance:</label>
-    <input type="text" id="grievance">
+    <div class="form-row">
+      <label>Grievance:</label>
+      <input type="text" id="grievance">
+    </div>
 
-    <label>Review Date:</label>
-    <input type="date" id="review-date">
+    <div class="form-row">
+      <label>Review Date:</label>
+      <input type="date" id="review-date">
+    </div>
 
-    <label>Summary:</label>
-    <textarea id="summary"></textarea>
+    <div class="form-row">
+      <label>Summary:</label>
+      <textarea id="summary"></textarea>
+    </div>
 
     <div class="feedback-options">
       <label for="feedback-text">Feedback:</label>
@@ -151,8 +182,7 @@
 </body>
 </html>
 
-
-
+     
   </plaintext>
 </body>
 </html>
