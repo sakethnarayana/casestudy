@@ -8,52 +8,146 @@
 <body>
   <plaintext>
 
-    
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel File Operations</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Details Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .patient-form {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      outline: 2px solid #4CAF50; /* Added outline */
+    }
+
+    .patient-form label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .patient-form input, .patient-form textarea {
+      width: calc(100% - 22px);
+      padding: 8px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+
+    .patient-form textarea {
+      resize: vertical;
+    }
+
+    .feedback-options {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .feedback-options textarea {
+      width: calc(100% - 22px);
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      resize: vertical;
+    }
+
+    .feedback-options label {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    .feedback-options button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Grievance Review</h1>
-    <button onclick="getDetails()">Get Details</button>
-    <table id="detailsTable">
-        <!-- Table headers will be added dynamically -->
-    </table>
 
-    <script>
-        function getDetails() {
-            fetch('http://localhost:5000/details')
-                .then(response => response.json())
-                .then(data => displayTable(data));
-        }
+  <div class="patient-form">
+    <label>Call Template:</label>
+    <input type="text" id="call-template">
 
-        function displayTable(data) {
-            const table = document.getElementById('detailsTable');
-            // Clear existing table contents
-            table.innerHTML = '';
+    <label>Name:</label>
+    <input type="text" id="name">
 
-            // Create table headers
-            const headers = Object.keys(data[0]);
-            const headerRow = table.insertRow();
-            headers.forEach(header => {
-                const th = document.createElement('th');
-                th.textContent = header;
-                headerRow.appendChild(th);
-            });
+    <label>Member ID:</label>
+    <input type="text" id="member-id">
 
-            // Populate table with data
-            data.forEach(item => {
-                const row = table.insertRow();
-                headers.forEach(header => {
-                    const cell = row.insertCell();
-                    cell.textContent = item[header];
-                });
-            });
-        }
-    </script>
+    <label>Phone:</label>
+    <input type="tel" id="phone">
+
+    <label>Email:</label>
+    <input type="email" id="email">
+
+    <label>Date of Service:</label>
+    <input type="date" id="date-of-service">
+
+    <label>Provider Name:</label>
+    <input type="text" id="provider-name">
+
+    <label>Medical Issue:</label>
+    <textarea id="medical-issue"></textarea>
+
+    <label>Complain:</label>
+    <input type="text" id="complain">
+
+    <label>Description:</label>
+    <textarea id="description"></textarea>
+
+    <label>Date of Filling:</label>
+    <input type="date" id="date-of-filling">
+
+    <label>GDR Name:</label>
+    <input type="text" id="gdr-name">
+
+    <label>Grievance:</label>
+    <input type="text" id="grievance">
+
+    <label>Review Date:</label>
+    <input type="date" id="review-date">
+
+    <label>Summary:</label>
+    <textarea id="summary"></textarea>
+
+    <div class="feedback-options">
+      <label for="feedback-text">Feedback:</label>
+      <textarea id="feedback-text"></textarea>
+
+      <label for="send-feedback">Send Feedback:</label>
+      <input type="checkbox" id="send-feedback">
+
+      <button onclick="savePatientDetails()">Save</button>
+    </div>
+  </div>
+
+  <script>
+    function savePatientDetails() {
+      // Add logic to save patient details here
+      alert('Patient details saved!');
+    }
+  </script>
 </body>
 </html>
 
