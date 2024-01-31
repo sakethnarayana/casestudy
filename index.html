@@ -8,109 +8,71 @@
 <body>
   <plaintext>
 
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload and Display</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        h1 {
-            text-align: center;
-        }
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
 
-        #upload-container {
-            text-align: center;
-            margin-top: 20px;
-        }
+    header, footer {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+    }
 
-        #file-input {
-            display: none;
-        }
+    .content {
+      flex-grow: 1;
+      display: flex;
+    }
 
-        #upload-button, #submit-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            margin: 5px;
-        }
+    .left-half, .right-half {
+      width: 50%;
+      box-sizing: border-box;
+      padding: 10px;
+    }
 
-        #submit-button:hover {
-            background-color: #008400;
-            color: #fff;
-        }
+    .left-half {
+      width: 20%;
+      background-color: #f0f0f0;
+    }
 
-        #file-content-container {
-            width: 300px;
-            height: 300px;
-            overflow: auto;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            margin: 20px auto;
-            padding: 10px;
-        }
-
-        #file-content {
-            white-space: pre-wrap;
-        }
-    </style>
+    .right-half {
+      width: 80%;
+      background-color: #e0e0e0;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <header>
+      <h1>Header</h1>
+    </header>
 
-<h1>File Upload and Display</h1>
+    <div class="content">
+      <div class="left-half">
+        <p>Left Half</p>
+      </div>
+      <div class="right-half">
+        <p>Right Half</p>
+      </div>
+    </div>
 
-<div id="upload-container">
-    <button id="upload-button" onclick="document.getElementById('file-input').click()">Upload TXT File</button>
-    <input type="file" id="file-input" accept=".txt" style="display: none" onchange="handleFile()">
-</div>
-
-<div id="file-content-container">
-    <div id="file-content"></div>
-</div>
-
-<button id="submit-button" onclick="submitForm()">Submit</button>
-
-<script>
-    function handleFile() {
-        const fileInput = document.getElementById('file-input');
-        const fileContentDiv = document.getElementById('file-content');
-        
-        const file = fileInput.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                fileContentDiv.innerText = e.target.result;
-            };
-
-            reader.readAsText(file);
-        }
-    }
-
-    function submitForm() {
-        const fileInput = document.getElementById('file-input');
-
-        if (!fileInput.files[0]) {
-            alert('Please upload a file before submitting.');
-            return;
-        }
-
-        // Perform any additional actions before redirecting
-
-        // Redirect to another page
-        window.location.href = 'redirect.html';  // Replace 'redirect.html' with your desired destination
-    }
-</script>
-
+    <footer>
+      <p>Footer</p>
+    </footer>
+  </div>
 </body>
 </html>
 
