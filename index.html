@@ -7,150 +7,215 @@
 </head>
 <body>
   <plaintext>
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/page1')
+def page1():
+    return render_template('page1.html')
+
+@app.route('/page2')
+def page2():
+    return render_template('page2.html')
+
+@app.route('/page3')
+def page3():
+    return render_template('page3.html')
+
+@app.route('/page4')
+def page4():
+    return render_template('page4.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patient Details Form</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    .patient-form {
-      max-width: 800px;
-      margin: 20px auto;
-      background-color: #fff;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      outline: 2px solid #4CAF50; /* Added outline */
-    }
-
-    .form-row {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 10px;
-    }
-
-    .form-row label {
-      width: 200px;
-      margin: auto 0;
-      font-size: 16px;
-    }
-
-    .form-row input,
-    .form-row textarea,
-    .form-row checkbox {
-      flex: 1;
-      padding: 8px;
-      font-size: 16px;
-      border: 1px solid #ddd;
-      border-radius: 3px;
-    }
-
-    .feedback-options {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .feedback-options textarea {
-      width: calc(30% - 22px); /* Adjusted width for smaller textarea */
-      padding: 8px;
-      font-size: 16px;
-      border: 1px solid #ddd;
-      border-radius: 3px;
-      resize: vertical;
-    }
-
-    .feedback-options label {
-      font-size: 16px;
-    }
-
-    .feedback-options button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Webpage</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Disable scrolling */
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            height: 15%;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 5%;
+        }
+        .green-section {
+            background-color: #4CAF50; /* Green color */
+            height: 100vh; /* 100% of the viewport height */
+            width: 20%;
+            float: left;
+            overflow: hidden; /* Hide scrollbar for the sidebar */
+        }
+        .sidebar {
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            background-color: #45a049; /* Darker green color for links */
+            margin-bottom: 5px;
+        }
+        .sidebar a:hover {
+            background-color: #5cb85c; /* Change color on hover */
+        }
+        .pink-section {
+            height: 100vh; /* 100% of the viewport height */
+            width: 80%;
+            float: left;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="patient-form">
-    <div class="form-row">
-      <label>Call Template:</label>
-      <input type="text" id="call-template">
+    <header>
+        <h1>Your Heading</h1>
+    </header>
+
+    <div class="green-section">
+        <div class="sidebar">
+            <a href="#" onclick="loadContent('page1')">Values</a>
+            <a href="#" onclick="loadContent('page2')">Dashboard</a>
+            <a href="#" onclick="loadContent('page3')">Grievance</a>
+        </div>
     </div>
 
-    <div class="form-row">
-      <label>Name:</label>
-      <input type="text" id="name">
-    </div>
+    <div class="pink-section" id="pink-section"></div>
 
-    <!-- ... Repeat similar form rows for other options ... -->
+    <footer>
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </footer>
+    <script>
+        function loadContent(page) {
+            fetch('/' + page)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('pink-section').innerHTML = data;
+                    if (page === 'page1') {
+                        addPage2ButtonListener();
+                    } else if (page === 'page2') {
+                        addPage3ButtonListener();
+                    }
+                });
+        }
+    
+        function addPage2ButtonListener() {
+            const loadPage2Button = document.getElementById('loadPage2Button');
+            if (loadPage2Button) {
+                loadPage2Button.addEventListener('click', function() {
+                    loadContent('page2');
+                });
+            }
+        }
+    
+        function addPage3ButtonListener() {
+            const loadPage3Button = document.getElementById('loadPage3Button');
+            if (loadPage3Button) {
+                loadPage3Button.addEventListener('click', function() {
+                    loadContent('page3');
+                });
+            }
+        }
+    </script>
 
-    <div class="form-row">
-      <label>Description:</label>
-      <textarea id="description"></textarea>
-    </div>
-
-    <div class="form-row">
-      <label>Date of Filling:</label>
-      <input type="date" id="date-of-filling">
-    </div>
-
-    <div class="form-row">
-      <label>GDR Name:</label>
-      <input type="text" id="gdr-name">
-    </div>
-
-    <div class="form-row">
-      <label>Grievance:</label>
-      <input type="text" id="grievance">
-    </div>
-
-    <div class="form-row">
-      <label>Review Date:</label>
-      <input type="date" id="review-date">
-    </div>
-
-    <div class="form-row">
-      <label>Summary:</label>
-      <textarea id="summary"></textarea>
-    </div>
-
-    <div class="feedback-options">
-      <label for="feedback-text">Feedback:</label>
-      <textarea id="feedback-text"></textarea>
-
-      <label for="send-feedback">Send Feedback:</label>
-      <input type="checkbox" id="send-feedback">
-
-      <button onclick="savePatientDetails()">Save</button>
-    </div>
-  </div>
-
-  <script>
-    function savePatientDetails() {
-      // Add logic to save patient details here
-      alert('Patient details saved!');
-    }
-  </script>
 </body>
 </html>
 
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 1</title>
+</head>
+<body>
+
+    <h1>Welcome to Page 1</h1>
     
+    <button id="loadPage2Button">Load Page 2</button>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 2</title>
+</head>
+<body>
+
+    <h1>Welcome to Page 2</h1>
+
+    <button id="loadPage3Button">Load Page 3</button> 
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
 
      
   </plaintext>
