@@ -7,6 +7,7 @@
 </head>
 <body>
   <plaintext>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,10 +17,11 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="/RFQ/data.js"></script>
   <script type="text/javascript">
-    google.charts.load('current', {'packages': ['line']});
+    google.charts.load('current', {'packages': ['line', 'corechart']});
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
+      // Chart 1 - Line Chart
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Month');
       data.addColumn('number', 'Enquiry');
@@ -44,6 +46,25 @@
 
       var chart = new google.charts.Line(document.getElementById('mychart'));
       chart.draw(data, google.charts.Line.convertOptions(options));
+
+      // Chart 2 - Bar Chart
+      var data_2 = google.visualization.arrayToDataTable([
+        ['Priority', 'count', { role: 'style' }],
+        ['Critical', 3, 'color: Magenta'],
+        ['High', 2, 'color: orange'],
+        ['Normal', 5, 'color: green'],
+      ]);
+
+      var options_2 = {
+        title: "Priority",
+        titlePosition: 'none',
+        width: 500,
+        height: 400,
+        legend: { position: "none" },
+      };
+
+      var chart_2 = new google.visualization.BarChart(document.getElementById('chart_2'));
+      chart_2.draw(data_2, options_2);
     }
   </script>
   <style>
@@ -90,10 +111,10 @@
     </thead>
     <tbody>
       <tr>
-        <td>Sample Complaint Detail 1</td>
-      </tr>
-      <tr>
-        <td>Sample Complaint Detail 2</td>
+        <td>
+          <!-- Chart 2 - Bar Chart -->
+          <div id="chart_2"></div>
+        </td>
       </tr>
       <!-- Add more rows as needed -->
     </tbody>
