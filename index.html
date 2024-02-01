@@ -7,6 +7,8 @@
 </head>
 <body>
   <plaintext>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,111 +16,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        .search{
-            display:flex;
+        .search {
+            display: flex;
             margin: 20px;
-            padding:10px;
+            padding: 10px;
             text-align: center;
         }
-        .inside{
-            width:25%;
+        .inside {
+            width: 25%;
         }
-        .bottom{
-            margin:30px;
+        .bottom {
+            margin: 30px;
             display: flex;
             text-align: center;
         }
-         .inside2{
-            text-align: right;
-            margin-left: auto;
-            margin-right: 0;
-
+         .inside2 {
+            text-align: left;
+            margin-right: auto;
+            margin-left: 0;
         } 
-        .table{
-            margin-left:auto;
-            margin-right:auto;
+        .table {
+            margin-left: auto;
+            margin-right: auto;
         }
-        .tablehead{
+        .tablehead {
             background: #008000;
             color: white;
         }
-        td{
+        td {
             padding: 2px;
         }
-        table, th,td{
+        table, th, td {
             border: 1px solid #ddd;
-            border-collapse:collapse ;
+            border-collapse: collapse;
         }
-        td{
-            white-space: nowrap;
-        }
-        table td:nth-child(8){
-            white-space: normal;
-            padding:4px;
-        }
-        thead tr td{
+        thead tr td {
             white-space: nowrap;
             text-align: center;
             font-size: small;
             font-weight: bold;
         }
-        h4{
-            text-align: center;
-        }
         .btn {
-        -webkit-border-radius: 7;
-        -moz-border-radius: 7;
-        border-radius: 5px;
-        font-family: system-ui;
-        color: #ffffff;
-        font-size: 12px;
-        background: #008000;
-        padding: 10px 20px 10px 20px;
-        text-decoration: none;
+            -webkit-border-radius: 7;
+            -moz-border-radius: 7;
+            border-radius: 5px;
+            font-family: system-ui;
+            color: #ffffff;
+            font-size: 12px;
+            background: #008000;
+            padding: 10px 20px 10px 20px;
+            text-decoration: none;
         }
         .btn:hover {
-        background: #5C9A1B;
-        text-decoration: none;
+            background: #5C9A1B;
+            text-decoration: none;
         }
     </style>
 </head>
 <body style="background-color: #f3f3f3; font-family: system-ui !important">
-    <div><h4>Call Transcription Count (30) -- No of Complaints (20) / No of Inquires (10)</h4></div>
+    <div><h4>Recently Modified Records</h4></div>
     <div class="search">
         <div class="inside" >
             <label for="type">Type:</label>
-            <select id="type">
+            <select name="type" id="type">
             <option value="">None</option>
-            <option value="Complaint">Complaint</option>
+            <option value="complaint">complaint</option>
             <option value="Inquiry">Inquiry</option>
             </select>
         </div>
         <div class="inside" >
-            <label for="status">Status:</label>
-            <select id="status">
+            <label for="priority-type">Priority:</label>
+            <select name="priority-type" id="priority-type">
             <option value="">None</option>
-            <option value="New">New</option>
-            <option value="In progress">In progress</option>
-            <option value="Completed">Completed</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
             </select>
         </div>
         <div class="inside">
-            <button class="btn" onclick="filter()">Filter</button>
+            <button class="btn" onclick="applyFilters()">Filter</button>
         </div>
     </div>
     <div class="table">
         <table>
             <thead  class="tablehead">
                 <tr>
-                    <td>Select</td>
+                    <td>Details</td>
                     <td>Case ID</td> 
-                    <td>Patient</td>
-                    <td>Provider</td>
+                    <td>Patient Name</td>
+                    <td>Provider Name</td>
                     <td>Type</td>
-                    <td>Status</td>
-                    <td>Owner</td>
+                    <td>Priority</td>
                     <td>Summary</td>
-                    <!-- <td>View Complete Details</td> -->
                 </tr>
             </thead>
             <tbody id="data" class="tablebody">
@@ -128,238 +117,195 @@
     </div>
     <div class="bottom">
         <div class="inside2" >
-            <!-- <label for="type">Type:</label> -->
-            <select name="type" id="user_list">
-                <option value="">None</option>
-                <option value="reviwer1">Reviewer 1</option>
-                <option value="reviwer2">Reviewer 2</option>
-                <option value="qualityqueue">Quality of care queue</option>
-                <option value="atitudequeue">Attitude queue</option>
-                <option value="others">Other queue</option>
-            </select>
-            <button class="btn" onclick="assign(true)">Assign</button>
+            <input type="text" id="search_value" placeholder="Enter Case ID">
+            <button class="btn" onclick="searchCase()">Search</button>
+            <button class="btn" id="new_transcript">New Transcription</button>
         </div>
     </div>
     <script>
+        json_data=[
+        {
+            "case_id":"case_001",
+            "patientname": "Saurabh",
+            "agent": "Sarah",
+            "policyId": "C1244",
+            "memberId": "F1234",
+            "claimId": 1234,
+            "date": "23/9/23",
+            "status":"New",
+            "owner":"Null",
+            "type":"Complaint",
+            "reason": "Lorem ipsum, dolor",
+            "priority": "high",
+            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
+         },
+        {
+            "case_id":"case_002",
+            "patientname": "Sumanth",
+            "agent": "Sagar",
+            "policyId": "C1245",
+            "memberId": "F1234",
+            "claimId": 1234,
+            "date": "2/12/23",
+            "status":"In progress",
+            "owner":"Reviewer 1",
+            "type":"Inquiry",
+            "reason": "Lorem ipsum, dolor",
+            "priority": "low",
+            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
+         },
+        {
+            "case_id":"case_003",
+            "patientname": "Susheel",
+            "agent": "Ali",
+            "policyId": "C1246",
+            "memberId": "F1234",
+            "claimId": 1234,
+            "date": "23/2/23",
+            "status":"Completed",
+            "owner":"Reviewer 3",
+            "type":"Complaint",
+            "reason": "Lorem ipsum, dolor",
+            "priority": "medium",
+            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
+         },
+        {
+            "case_id":"case_004",
+            "patientname": "Vinay",
+            "agent": "Subhrut",
+            "policyId": "C1247",
+            "memberId": "F1234",
+            "claimId": 1234,
+            "date": "23/11/23",
+            "status":"In progress",
+            "owner":"Reviewer 2",
+            "type":"Complaint",
+            "reason": "Lorem ipsum, dolor",
+            "priority": "low",
+            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
+         },
+        {
+            "case_id":"case_005",
+            "patientname": "Sushanth",
+            "agent": "Sugam",
+            "policyId": "C1248",
+            "memberId": "F1234",
+            "claimId": 1234,
+            "date": "23/12/27",
+            "status":"New",
+            "owner":"Null", 
+            "type":"Inquiry",
+            "reason": "Lorem ipsum, dolor",
+            "priority": "low",
+            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
+         }
+    ]
 
 
+        function applyFilters() {
+            const typeFilter = document.getElementById('type').value;
+            const priorityFilter = document.getElementById('priority-type').value;
 
+            let filteredData = json_data;
 
+            if (typeFilter !== '') {
+                filteredData = filteredData.filter(record => record.type === typeFilter);
+            }
 
+            if (priorityFilter !== '') {
+                filteredData = filteredData.filter(record => record.priority === priorityFilter);
+            }
 
+            // Update the table with the filtered data
+            updateTable(filteredData);
+        }
 
-json_data=[
-    {
-        "case_id":"case_001",
-        "patientname": "Saurabh",
-        "agent": "Sarah",
-        "policyId": "C1244",
-        "memberId": "F1234",
-        "claimId": 1234,
-        "date": "23/9/23",
-        "status":"New",
-        "owner":"Null",
-        "type":"Complaint",
-        "reason": "Lorem ipsum, dolor",
-        "priority": "high",
-        "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-
-     },
-    {
-        "case_id":"case_002",
-        "patientname": "Sumanth",
-        "agent": "Sagar",
-        "policyId": "C1245",
-        "memberId": "F1234",
-        "claimId": 1234,
-        "date": "2/12/23",
-        "status":"In progress",
-        "owner":"Reviewer 1",
-        "type":"Inquiry",
-        "reason": "Lorem ipsum, dolor",
-        "priority": "low",
-        "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-
-     },
-    {
-        "case_id":"case_003",
-        "patientname": "Susheel",
-        "agent": "Ali",
-        "policyId": "C1246",
-        "memberId": "F1234",
-        "claimId": 1234,
-        "date": "23/2/23",
-        "status":"Completed",
-        "owner":"Reviewer 3",
-        "type":"Complaint",
-        "reason": "Lorem ipsum, dolor",
-        "priority": "medium",
-        "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-
-     },
-    {
-        "case_id":"case_004",
-        "patientname": "Vinay",
-        "agent": "Subhrut",
-        "policyId": "C1247",
-        "memberId": "F1234",
-        "claimId": 1234,
-        "date": "23/11/23",
-        "status":"In progress",
-        "owner":"Reviewer 2",
-        "type":"Complaint",
-        "reason": "Lorem ipsum, dolor",
-        "priority": "low",
-        "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-
-     },
-    {
-        "case_id":"case_005",
-        "patientname": "Sushanth",
-        "agent": "Sugam",
-        "policyId": "C1248",
-        "memberId": "F1234",
-        "claimId": 1234,
-        "date": "23/12/27",
-        "status":"New",
-        "owner":"Null", 
-        "type":"Inquiry",
-        "reason": "Lorem ipsum, dolor",
-        "priority": "low",
-        "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-
-     }
-]
-
-
-
-        function filter(){
-              var dropdown1 = document.getElementById("type");
-              var dropdown2 = document.getElementById("status");
-              var option1 = dropdown1.selectedIndex;
-              var option2 = dropdown2.selectedIndex;
-              var type = dropdown1.options[option1].value;
-              var status = dropdown2.options[option2].value;
-              if(type ==''  && status == '')
-              {
-                alert("No filter is selected");
-              }
-              else if(type =='')
-              {
-                updated_json_data = json_data.filter(record=> record.status == status);
-              }
-              else if(status == '')
-              {
-                updated_json_data = json_data.filter(record=> record.type == type);
-              }
-              else{
-                updated_json_data = json_data.filter(record=> ( record.type == type && record.status == status));
-              }
-              let placeholder = document.getElementById("data");
-              let out="";
-              let x=1;
-              for(let products of updated_json_data){
-              out+=`<tr>
-              <td><input id="checkbox" type="checkbox"></td>
-              <td>${products.patientname}</td>
-              <td>${products.agent}</td>
-              <td>${products.type}</td>
-              <td>${products.status}</td>
-              <td>${products.owner}</td>
-              <td>${products.summary}</td> 
-              </tr>`;
-              }
-              placeholder.innerHTML=out;
-}
-
-
-
-
-
-
-let placeholder = document.getElementById("data");
+        function updateTable(data) {
+            let placeholder = document.getElementById("data");
             let out="";
-            for(let products of json_data){
-            out+=`<tr>
-            <td><input type="checkbox"></td>
-            <td>${products.case_id}</td>
-            <td>${products.patientname}</td>
-            <td>${products.agent}</td>
-            <td>${products.type}</td>
-            <td>${products.status}</td>
-            <td>${products.owner}</td>
-            <td>${products.summary}</td>
-            </tr>`;
+            for(let products of data){
+                out+=`<tr>
+                <td><a href="#" onclick="redirectToDetails('${products.case_id}')">Details</a></td>
+                <td>${products.case_id}</td>
+                <td>${products.patientname}</td>
+                <td>${products.agent}</td>
+                <td>${products.type}</td>
+                <td>${products.priority}</td>
+                <td>${products.summary}</td>
+                </tr>`;
+            }
+            if (data.length === 0) {
+                out = '<tr><td colspan="7">No records found</td></tr>';
             }
             placeholder.innerHTML=out;
-            function assign(isReassign) {
-                var dropdown = document.getElementById("user_list");
-                var selectedUser = dropdown.options[dropdown.selectedIndex].value;
-        
-                if (!selectedUser) {
-                    alert("Please select a user");
-                    return;
-                }
-        
-                var checkboxes = document.querySelectorAll("#data input[type='checkbox']:checked");
-        
-                if (checkboxes.length === 0) {
-                    alert("Please select at least one case");
-                    return;
-                }
-        
-                checkboxes.forEach(function (checkbox) {
-                    var rowIndex = checkbox.closest("tr").rowIndex - 1; // Adjust for header row
-                    var caseData = json_data[rowIndex];
-        
-                    if (caseData.status === "New" && isReassign) {
-                        // If status is 'New' and reassign is clicked, update status to 'In progress'
-                        caseData.status = "In progress";
-                    } else if (caseData.status === "In progress" && isReassign) {
-                        // If status is 'In progress' and reassign is clicked, show confirm box
-                        var confirmReassign = confirm("This case is already assigned. Do you want to reassign it?");
-                        if (!confirmReassign) {
-                            return;
-                        }
-                    } else if (caseData.status === "Completed" && isReassign) {
-                        // If status is 'Completed' and reassign is clicked, show confirm box
-                        var confirmReopen = confirm("This case is already completed. Do you want to reopen it?");
-                        if (confirmReopen) {
-                            caseData.status = "In progress";
-                        } else {
-                            return;
-                        }
-                    }
-        
-                    // Update owner and reflect changes in both JSON and table
-                    caseData.owner = selectedUser;
-                    updateTable();
-                });
-            }
-        
-            function updateTable() {
-                let placeholder = document.getElementById("data");
-                let out = "";
-                for (let products of json_data) {
-                    out += `<tr>
-                                <td><input type="checkbox"></td>
-                                <td>${products.case_id}</td>
-                                <td>${products.patientname}</td>
-                                <td>${products.agent}</td>
-                                <td>${products.type}</td>
-                                <td>${products.status}</td>
-                                <td>${products.owner}</td>
-                                <td>${products.summary}</td>
-                            </tr>`;
-                }
-                placeholder.innerHTML = out;
+        }
+
+        function searchCase() {
+            const caseId = document.getElementById('search_value').value;
+
+            if (caseId === '') {
+                alert('Please enter a Case ID');
+                return;
             }
 
+            const foundCase = json_data.find(record => record.case_id === caseId);
+
+            if (foundCase) {
+                // Update the table with the found case
+                updateTable([foundCase]);
+            } else {
+                // Case not found
+                updateTable([]);
+            }
+        }
+
+        // Initial table population
+        updateTable(json_data);
+
+
+    //    function redirectToDetails(caseId) {
+      //      const detailsPageURL = `details_page.html?caseId=${caseId}`;
+            
+        //    window.location.href = detailsPageURL;
+       // }
+
+
+
+        function redirectToDetails(caseId) {
+            let detailsPageURL;
+        
+            // Check the case ID and set the details page URL accordingly
+            switch (caseId) {
+                case 'case_001':
+                    detailsPageURL = 'dummypage1.html';
+                    break;
+                case 'case_002':
+                    detailsPageURL = 'dummypage2.html';
+                    break;
+                // Add more cases as needed
+        
+                default:
+                    // Default case if the case ID doesn't match any specific case
+                    detailsPageURL = 'default_page.html';
+            }
+        
+            // Redirect to the details page
+            window.location.href = detailsPageURL;
+        }
+        
+
+        const newbutton = document.getElementById('new_transcript');
+        if (newbutton) {
+            newbutton.addEventListener('click', function() {
+                loadContent('upload_file');
+            });
+        }
     </script>
 </body>
 </html>
 
-        
+
+    
   </plaintext>
 </body>
 </html>
