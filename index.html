@@ -9,39 +9,17 @@
   <plaintext>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complaint Form with Charts</title>
+  <title>Complaint Form</title>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="/RFQ/data.js"></script>
-
   <script type="text/javascript">
-    google.charts.load('current', {'packages': ['line', 'corechart']});
-    google.charts.setOnLoadCallback(drawCharts);
+    google.charts.load('current', {'packages': ['line']});
+    google.charts.setOnLoadCallback(drawChart);
 
-    function drawCharts() {
-      // Second Chart
-      var data_2 = google.visualization.arrayToDataTable([
-        ['Priority', 'Count', { role: 'style' }],
-        ['Critical', 3, 'color: Magenta'],
-        ['High', 2, 'color: Orange'],
-        ['Normal', 5, 'color: Green']
-      ]);
-
-      var options_2 = {
-        title: "Priority",
-        titlePosition: 'none',
-        width: 500,
-        height: 400,
-        legend: { position: "none" },
-      };
-
-      var chart_2 = new google.visualization.BarChart(document.getElementById('mychart_2'));
-      chart_2.draw(data_2, options_2);
-
-      // First Chart
+    function drawChart() {
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Month');
       data.addColumn('number', 'Enquiry');
@@ -52,23 +30,22 @@
         ["September", 1230, 1000],
         ["October", 1400, 740],
         ["November", 1520, 660],
-        ["December", 1800, 600]
+        ["December", 1800, 600],
       ]);
 
       var options = {
         chart: {
           title: 'Complaints and Enquiries',
-          subtitle: 'Last Six Months'
+          subtitle: 'Last Six Months',
         },
-        width: 900,
-        height: 500
+        width: 600,
+        height: 300,
       };
 
       var chart = new google.charts.Line(document.getElementById('mychart'));
       chart.draw(data, google.charts.Line.convertOptions(options));
     }
   </script>
-
   <style>
     #generate {
       background-color: green;
@@ -78,17 +55,26 @@
       cursor: pointer;
       border-radius: 5px;
     }
+    table {
+      border-collapse: collapse;
+      width: 50%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
   </style>
 </head>
-
 <body>
+
+  <div id="mychart" style="margin: auto; width: 50%;"></div>
 
   <label for="complaint">Complain:</label>
   <select id="complaint">
-    <option value="attitude">Attitude of Provider</option>
-    <option value="quality">Quality of Care</option>
-    <option value="response">Response Issues</option>
-    <option value="other">Other</option>
+    <option value="complain">Complain</option>
+    <option value="priority_complain">Priority Complain</option>
   </select>
 
   <label for="date">Date of Filling:</label>
@@ -96,11 +82,24 @@
 
   <button id="generate">Generate</button>
 
-  <div id="mychart_2" style="margin: auto; width: 50%;"></div>
-  <div id="mychart" style="margin: auto; width: 50%;"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>Complaint Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Sample Complaint Detail 1</td>
+      </tr>
+      <tr>
+        <td>Sample Complaint Detail 2</td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
 
 </body>
-
 </html>
 
         
