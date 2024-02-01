@@ -68,6 +68,14 @@
     }
   </script>
   <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
     #generate {
       background-color: green;
       color: white;
@@ -75,6 +83,11 @@
       border: none;
       cursor: pointer;
       border-radius: 5px;
+    }
+    #complaint-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
     }
     table {
       border-collapse: collapse;
@@ -90,16 +103,18 @@
 </head>
 <body>
 
-  <div id="mychart" style="margin: auto; width: 50%;"></div>
+  <div id="mychart" style="width: 100%;"></div>
 
-  <label for="complaint">Complain:</label>
-  <select id="complaint">
-    <option value="complain">Complain</option>
-    <option value="priority_complain">Priority Complain</option>
-  </select>
+  <div id="complaint-container">
+    <label for="complaint">Complain:</label>
+    <select id="complaint">
+      <option value="complain">Complain</option>
+      <option value="priority_complain">Priority Complain</option>
+    </select>
 
-  <label for="date">Date of Filling:</label>
-  <input type="date" id="date" name="date">
+    <label for="date">Date of Filling:</label>
+    <input type="date" id="date" name="date">
+  </div>
 
   <button id="generate">Generate</button>
 
