@@ -11,83 +11,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Table with Checkboxes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcription Upload</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f3f3f3; /* Background color */
+        }
+        #main-container {
+            text-align: center;
+        }
+        #fileContent {
+            width: 70%; /* Adjust the width as needed */
+            resize: none;
+        }
+        #fileInput {
+            display: none;
+        }
+        label, button, input {
+            margin: 5px;
+        }
+        #browseBtn, #uploadBtn, #submitBtn {
+            background-color: #008000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, border 0.3s;
+        }
+        #browseBtn:hover, #uploadBtn:hover, #submitBtn:hover {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+        }
+        /* Add padding to create a gap between buttons */
+        #browseBtn, #uploadBtn, #submitBtn {
+            margin-right: 10px;
+        }
+        #submitBtn {
+            float: right;
+        }
+    </style>
 </head>
 <body>
 
-  <table id="myTable">
-    <!-- The table header, you can customize it based on your JSON keys -->
-    <thead>
-      <tr>
-        <th>Select</th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>City</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Table body will be populated dynamically using JavaScript -->
-    </tbody>
-  </table>
+    <div id="main-container">
+        <h1>Upload Transcription</h1>
 
-  <button onclick="displaySelectedIds()">Display Selected IDs</button>
+        <!-- Upload File Box -->
+        <label for="fileInput">Upload File:</label>
+        <input type="file" id="fileInput" onchange="displayFileName()">
+        <button id="browseBtn" onclick="document.getElementById('fileInput').click();">Browse</button>
+        <input type="text" id="fileName" readonly>
+        <button id="uploadBtn" onclick="uploadFile()">Upload</button>
 
-  <script>
-    // Example JSON data
-    var jsonData = [
-      { id: "001", name: "John Doe", age: 25, city: "ExampleCity" },
-      { id: "002", name: "Jane Smith", age: 30, city: "AnotherCity" },
-      { id: "003", name: "Bob Johnson", age: 22, city: "CityXYZ" },
-      { id: "004", name: "Alice Williams", age: 28, city: "SampleVille" },
-      { id: "005", name: "Charlie Brown", age: 35, city: "TestingTown" },
-      { id: "006", name: "Eva Martinez", age: 32, city: "NewCity" },
-      { id: "007", name: "David Anderson", age: 27, city: "OldCity" },
-      { id: "008", name: "Grace Taylor", age: 29, city: "UpTown" }
-    ];
+        <!-- Display Content Box -->
+        <div>
+            <h2>File Content:</h2>
+            <textarea id="fileContent" rows="15" cols="150" readonly></textarea>
+        </div>
 
-    // Reference to the table body
-    var tableBody = document.querySelector("#myTable tbody");
+        <!-- Submit Transcription Button -->
+        <button id="submitBtn" onclick="submitTranscription()">Submit Transcription</button>
+    </div>
 
-    // Loop through the JSON data and populate the table
-    jsonData.forEach(function (data) {
-      // Create a new row
-      var row = tableBody.insertRow();
+    <script>
+        // Function to display the selected file name
+        function displayFileName() {
+            var fileInput = document.getElementById('fileInput');
+            var fileNameInput = document.getElementById('fileName');
 
-      // Add a checkbox in the first cell of each row
-      var checkboxCell = row.insertCell(0);
-      var checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkboxCell.appendChild(checkbox);
-
-      // Add other cells with data
-      Object.keys(data).forEach(function (key, index) {
-        var cell = row.insertCell(index + 1);
-        cell.textContent = data[key];
-      });
-    });
-
-    // Function to display selected IDs
-    function displaySelectedIds() {
-      var selectedIds = [];
-
-      // Get all checkboxes in the table
-      var checkboxes = document.querySelectorAll("#myTable tbody input[type='checkbox']");
-
-      // Loop through checkboxes and check if they are checked
-      checkboxes.forEach(function (checkbox, index) {
-        if (checkbox.checked) {
-          // Get the corresponding ID from the data
-          var id = jsonData[index].id;
-          selectedIds.push(id);
+            if (fileInput.files.length > 0) {
+                fileNameInput.value = fileInput.files[0].name;
+            }
         }
-      });
 
-      // Display the selected IDs
-      alert("Selected IDs: " + selectedIds.join(', '));
-    }
-  </script>
+        // Function to handle file selection and display content
+        function uploadFile() {
+            var fileInput = document.getElementById('fileInput');
+            var fileContentInput = document.getElementById('fileContent');
+
+            if (fileInput.files.length > 0) {
+                // Additional logic to read file content and display in 'fileContent' textarea
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    fileContentInput.value = e.target.result;
+                };
+                reader.readAsText(fileInput.files[0]);
+            } else {
+                alert('Please select a file.');
+            }
+        }
+
+        // Function to handle transcription submission
+        function submitTranscription() {
+            // Add your logic to handle transcription submission here
+            alert('Transcription submitted!');
+        }
+    </script>
 
 </body>
 </html>
