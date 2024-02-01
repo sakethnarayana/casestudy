@@ -7,291 +7,73 @@
 </head>
 <body>
   <plaintext>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search and Table Page</title>
+    <title>Login Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-        }
-
-        .container {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
 
-        #search-container {
-            width: 100%;
+        #login-container {
+            background-color: #fff;
             padding: 20px;
-            background-color: #f2f2f2;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        #table-container {
-            width: 100%;
-            padding: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        label {
+            display: inline-block;
+            width: 100px;
             text-align: left;
+            margin-right: 10px;
         }
 
-        th {
-            background-color: #f2f2f2;
-        }
-
-        input[type="text"] {
-            width: 80%;
-            padding: 8px;
+        input {
+            width: calc(100% - 120px);
+            padding: 10px;
+            margin: 8px 0;
             box-sizing: border-box;
         }
 
         button {
-            padding: 8px;
-            background-color: #4CAF50;
+            background-color: #4caf50;
             color: white;
+            padding: 10px 20px;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
         }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #bottom-button-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div id="search-container">
-        <input type="text" id="search" name="search" placeholder="Enter Claim ID">
-        <button onclick="search()">Search</button>
+    <div id="login-container">
+        <h1>Grievance Review</h1>
+        <form action="#" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <button type="submit">Login</button>
+        </form>
     </div>
-
-    <div id="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Policy ID</th>
-                    <th>Patient</th>
-                    <th>Agent</th>
-                    <th>Claim ID</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-             
-            </tbody>
-        </table>
-    </div>
-    <p id="record" style="text-align:center"></p>
-    
-    <div id="bottom-button-container">
-        <button onclick="addNewRow()">New Transcript</button>
-    </div>
-</div>
-
-<script>
-    var jsonData =[
-        {
-        "patient": "John Doe",
-        "agent": "AgentA",
-        "policyId": "Policy123",
-        "memberId": "Member001",
-        "claimId": "Claim001",
-        "providerName": "ABC Hospital",
-        "date": "2024-01-01",
-        "hospitalAddress": "123 Main St, City",
-        "summary": "Some summary text"
-    },
-    {
-        "patient": "Jane Smith",
-        "agent": "AgentB",
-        "policyId": "Policy456",
-        "memberId": "Member002",
-        "claimId": "Claim002",
-        "providerName": "XYZ Clinic",
-        "date": "2024-02-15",
-        "hospitalAddress": "456 Oak St, Town",
-        "summary": "Another summary text"
-    },
-    {
-        "patient": "Robert Johnson",
-        "agent": "AgentC",
-        "policyId": "Policy789",
-        "memberId": "Member003",
-        "claimId": "Claim003",
-        "providerName": "EFG Medical Center",
-        "date": "2024-03-20",
-        "hospitalAddress": "789 Pine St, Village",
-        "summary": "Summary for Robert Johnson"
-    },
-    {
-        "patient": "Emily Davis",
-        "agent": "AgentD",
-        "policyId": "Policy234",
-        "memberId": "Member004",
-        "claimId": "Claim004",
-        "providerName": "LMN Medical Center",
-        "date": "2024-04-10",
-        "hospitalAddress": "567 Maple St, Village",
-        "summary": "Summary for Emily Davis"
-    },
-    {
-        "patient": "Michael Johnson",
-        "agent": "AgentE",
-        "policyId": "Policy567",
-        "memberId": "Member005",
-        "claimId": "Claim005",
-        "providerName": "PQR Healthcare",
-        "date": "2024-05-25",
-        "hospitalAddress": "789 Birch St, Town",
-        "summary": "Summary for Michael Johnson"
-    },
-    {
-        "patient": "Sara Wilson",
-        "agent": "AgentF",
-        "policyId": "Policy890",
-        "memberId": "Member006",
-        "claimId": "Claim006",
-        "providerName": "GHI Hospital",
-        "date": "2024-06-30",
-        "hospitalAddress": "890 Cedar St, City",
-        "summary": "Summary for Sara Wilson"
-    },
-    {
-        "patient": "Daniel White",
-        "agent": "AgentG",
-        "policyId": "Policy111",
-        "memberId": "Member007",
-        "claimId": "Claim007",
-        "providerName": "JKL Clinic",
-        "date": "2024-07-15",
-        "hospitalAddress": "111 Elm St, Town",
-        "summary": "Summary for Daniel White"
-    },
-    {
-        "patient": "Olivia Brown",
-        "agent": "AgentH",
-        "policyId": "Policy222",
-        "memberId": "Member008",
-        "claimId": "Claim008",
-        "providerName": "UVW Medical Center",
-        "date": "2024-08-20",
-        "hospitalAddress": "222 Walnut St, Village",
-        "summary": "Summary for Olivia Brown"
-    },
-    {
-        "patient": "Andrew Miller",
-        "agent": "AgentI",
-        "policyId": "Policy333",
-        "memberId": "Member009",
-        "claimId": "Claim009",
-        "providerName": "XYZ Healthcare",
-        "date": "2024-09-05",
-        "hospitalAddress": "333 Pine St, City",
-        "summary": "Summary for Andrew Miller"
-    },
-    {
-        "patient": "Sophia Taylor",
-        "agent": "AgentJ",
-        "policyId": "Policy444",
-        "memberId": "Member010",
-        "claimId": "Claim010",
-        "providerName": "ABC Clinic",
-        "date": "2024-10-10",
-        "hospitalAddress": "444 Oak St, Village",
-        "summary": "Summary for Sophia Taylor"
-    }
-];
-
-    function search() {
-        var searchInput = document.getElementById("search").value.trim();
-        var tableBody = document.getElementById("table-body");
-        tableBody.innerHTML = "";
-
-        if (searchInput === "") {
-            // If search input is empty, display all values in the table
-            jsonData.forEach(function(item) {
-                var row = tableBody.insertRow();
-                var columnsToShow = ["policyId", "patient", "agent", "claimId", "date"];
-
-                columnsToShow.forEach(function(column) {
-                    var cell = row.insertCell();
-                    cell.appendChild(document.createTextNode(item[column]));
-                });
-            });
-        } else {
-            // If search input is not empty, filter and display matching value
-            var matchingJson = jsonData.find(function(item) {
-                return item.claimId === searchInput;
-            });
-
-            if (matchingJson) {
-                var row = tableBody.insertRow();
-                var columnsToShow = ["policyId", "patient", "agent", "claimId", "date"];
-
-                columnsToShow.forEach(function(column) {
-                    var cell = row.insertCell();
-                    cell.appendChild(document.createTextNode(matchingJson[column]));
-                });
-            } else {
-                
-                 document.getElementById("record").innerHTML="No records found";
-                
-                // const noRecordsMessage = document.createElement("p");
-                // noRecordsMessage.textContent = "No records found";
-                // noRecordsMessage.classList.add("no-records");
-                // tablecontainer.appendChild(noRecordsMessage);
-                // Display a message if no matching records are found
-                // var row = tableBody.insertRow();
-                // var cell = row.insertCell();
-                // cell.colSpan = columnsToShow.length;
-                // cell.appendChild(document.createTextNode("No records found."));
-            }
-        }
-    }
-
-    function addNewRow() {
-        // Add your logic to add a new row to the table
-        // For demonstration purposes, let's add a placeholder row
-        var tableBody = document.getElementById("table-body");
-        var row = tableBody.insertRow();
-        var columnsToShow = ["policyId", "patient", "agent", "claimId", "date"];
-
-        columnsToShow.forEach(function(column) {
-            var cell = row.insertCell();
-            cell.appendChild(document.createTextNode("NewValue"));
-        });
-    }
-
-    // Call the search function when the page loads to display the data
-    window.onload = function() {
-        search();
-    };
-</script>
-
 </body>
 </html>
 
+        
   </plaintext>
 </body>
 </html>
