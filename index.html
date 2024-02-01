@@ -13,127 +13,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complaint Form</title>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript" src="/RFQ/data.js"></script>
-  <script type="text/javascript">
-    google.charts.load('current', {'packages': ['line', 'corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      // Chart 1 - Line Chart
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Month');
-      data.addColumn('number', 'Enquiry');
-      data.addColumn('number', 'Complaints');
-      data.addRows([
-        ["July", 1000, 1500],
-        ["August", 1150, 1250],
-        ["September", 1230, 1000],
-        ["October", 1400, 740],
-        ["November", 1520, 660],
-        ["December", 1800, 600],
-      ]);
-
-      var options = {
-        chart: {
-          title: 'Complaints and Enquiries',
-          subtitle: 'Last Six Months',
-        },
-        width: 600,
-        height: 300,
-      };
-
-      var chart = new google.charts.Line(document.getElementById('mychart'));
-      chart.draw(data, google.charts.Line.convertOptions(options));
-
-      // Chart 2 - Bar Chart
-      var data_2 = google.visualization.arrayToDataTable([
-        ['Priority', 'count', { role: 'style' }],
-        ['Critical', 3, 'color: Magenta'],
-        ['High', 2, 'color: orange'],
-        ['Normal', 5, 'color: green'],
-      ]);
-
-      var options_2 = {
-        title: "Priority",
-        titlePosition: 'none',
-        width: 500,
-        height: 400,
-        legend: { position: "none" },
-      };
-
-      var chart_2 = new google.visualization.BarChart(document.getElementById('chart_2'));
-      chart_2.draw(data_2, options_2);
-    }
-  </script>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    #generate {
-      background-color: green;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    #complaint-container {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 50%;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-  </style>
+  <title>Dynamic Table with Checkboxes</title>
 </head>
 <body>
 
-  <div id="mychart" style="width: 100%;"></div>
-
-  <div id="complaint-container">
-    <label for="complaint">Complain:</label>
-    <select id="complaint">
-      <option value="complain">Complain</option>
-      <option value="priority_complain">Priority Complain</option>
-    </select>
-
-    <label for="date">Date of Filling:</label>
-    <input type="date" id="date" name="date">
-  </div>
-
-  <button id="generate">Generate</button>
-
-  <table>
+  <table id="myTable">
+    <!-- The table header, you can customize it based on your JSON keys -->
     <thead>
       <tr>
-        <th>Complaint Details</th>
+        <th>Select</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>City</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <!-- Chart 2 - Bar Chart -->
-          <div id="chart_2"></div>
-        </td>
-      </tr>
-      <!-- Add more rows as needed -->
+      <!-- Table body will be populated dynamically using JavaScript -->
     </tbody>
   </table>
+
+  <button onclick="displaySelectedIds()">Display Selected IDs</button>
+
+  <script>
+    // Example JSON data
+    var jsonData = [
+      { id: "001", name: "John Doe", age: 25, city: "ExampleCity" },
+      { id: "002", name: "Jane Smith", age: 30, city: "AnotherCity" },
+      { id: "003", name: "Bob Johnson", age: 22, city: "CityXYZ" },
+      { id: "004", name: "Alice Williams", age: 28, city: "SampleVille" },
+      { id: "005", name: "Charlie Brown", age: 35, city: "TestingTown" },
+      { id: "006", name: "Eva Martinez", age: 32, city: "NewCity" },
+      { id: "007", name: "David Anderson", age: 27, city: "OldCity" },
+      { id: "008", name: "Grace Taylor", age: 29, city: "UpTown" }
+    ];
+
+    // Reference to the table body
+    var tableBody = document.querySelector("#myTable tbody");
+
+    // Loop through the JSON data and populate the table
+    jsonData.forEach(function (data) {
+      // Create a new row
+      var row = tableBody.insertRow();
+
+      // Add a checkbox in the first cell of each row
+      var checkboxCell = row.insertCell(0);
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkboxCell.appendChild(checkbox);
+
+      // Add other cells with data
+      Object.keys(data).forEach(function (key, index) {
+        var cell = row.insertCell(index + 1);
+        cell.textContent = data[key];
+      });
+    });
+
+    // Function to display selected IDs
+    function displaySelectedIds() {
+      var selectedIds = [];
+
+      // Get all checkboxes in the table
+      var checkboxes = document.querySelectorAll("#myTable tbody input[type='checkbox']");
+
+      // Loop through checkboxes and check if they are checked
+      checkboxes.forEach(function (checkbox, index) {
+        if (checkbox.checked) {
+          // Get the corresponding ID from the data
+          var id = jsonData[index].id;
+          selectedIds.push(id);
+        }
+      });
+
+      // Display the selected IDs
+      alert("Selected IDs: " + selectedIds.join(', '));
+    }
+  </script>
 
 </body>
 </html>
