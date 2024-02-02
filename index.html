@@ -8,7 +8,7 @@
 <body>
   <plaintext>
 
-   <!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -17,7 +17,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="/RFQ/data.js"></script>
   <script type="text/javascript">
-    google.charts.load('current', {'packages': ['line', 'corechart']});
+    google.charts.load('current', {'packages': ['line', 'corechart', 'table']});
     google.charts.setOnLoadCallback(drawCharts);
 
     function drawCharts() {
@@ -44,15 +44,17 @@
         height: 300,
       };
 
-      var chart = new google.charts.Line(document.getElementById('mychart'));
+      var chart = new google.charts.Line(document.getElementById('line-chart'));
       chart.draw(data, google.charts.Line.convertOptions(options));
+
+      // Existing code for Date of Filling, Generate Button...
 
       // Chart 2 - Bar Chart
       var initialData = [
         ['Priority', 'count', { role: 'style' }],
-        ['Critical', 3, 'color: Magenta'],
-        ['High', 2, 'color: orange'],
-        ['Normal', 5, 'color: green'],
+        ['Critical', getRandomInRange(3, 5), 'color: Magenta'],
+        ['High', getRandomInRange(3, 5), 'color: orange'],
+        ['Normal', getRandomInRange(3, 5), 'color: green'],
       ];
 
       var data_2 = google.visualization.arrayToDataTable(initialData);
@@ -61,11 +63,11 @@
         title: "Priority",
         titlePosition: 'none',
         width: 500,
-        height: 00,
+        height: 400,
         legend: { position: "none" },
       };
 
-      var chart_2 = new google.visualization.BarChart(document.getElementById('chart_2'));
+      var chart_2 = new google.visualization.BarChart(document.getElementById('bar-chart'));
       chart_2.draw(data_2, options_2);
 
       // Handle the "Generate" button click
@@ -73,11 +75,11 @@
         // Get the new date input value
         var newDate = document.getElementById('date').value;
 
-        // Generate random values within the range of 3, 2, 5
+        // Generate random values within the range of 3, 4, 5
         var randomValues = [
-          Math.floor(Math.random() * 3) + 3,  // Critical
-          Math.floor(Math.random() * 3) + 2,  // High
-          Math.floor(Math.random() * 3) + 5   // Normal
+          getRandomInRange(3, 5),  // Critical
+          getRandomInRange(3, 5),  // High
+          getRandomInRange(3, 5)   // Normal
         ];
 
         // Update the DataTable with new values
@@ -88,80 +90,118 @@
         // Redraw the Bar Chart with updated data
         chart_2.draw(data_2, options_2);
       });
+
+      // Provided Code - Pie Chart and Table...
+      var jsonData = [
+        // ... (the provided data)
+      ];
+
+      var reasonCounts = {};
+      jsonData.forEach(record => {
+        reasonCounts[record.reason] = (reasonCounts[record.reason] || 0) + 1;
+      });
+
+      var pieData = new google.visualization.DataTable();
+      pieData.addColumn('string', 'Reason');
+      pieData.addColumn('number', 'Count');
+
+      Object.entries(reasonCounts).forEach(([reason, count]) => {
+        pieData.addRow([reason, count]);
+      });
+
+      var pieChart = new google.visualization.PieChart(document.getElementById('pieChart'));
+      pieChart.draw(pieData, {
+        title: 'Reason Distribution',
+        width: 400,
+        height: 300,
+        backgroundColor: '#fff',
+      });
+
+      var tableData = new google.visualization.DataTable();
+      tableData.addColumn('string', 'Patient Name');
+      tableData.addColumn('string', 'Agent');
+      tableData.addColumn('string', 'Policy ID');
+      tableData.addColumn('string', 'Member ID');
+      tableData.addColumn('number', 'Claim ID');
+      tableData.addColumn('string', 'Date');
+      tableData.addColumn('string', 'Reason');
+      tableData.addColumn('string', 'Priority');
+      tableData.addColumn('string', 'Summary');
+
+      var tableChart = new google.visualization.Table(document.getElementById('tableChart'));
+
+      google.visualization.events.addListener(pieChart, 'select', function () {
+        var selectedItem = pieChart.getSelection()[0];
+        if (selectedItem) {
+          var selectedReason = pieData.getValue(selectedItem.row, 0);
+          var selectedRecords = jsonData.filter(record => record.reason === selectedReason);
+
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Patient Name');
+          dataTable.addColumn('string', 'Agent');
+          dataTable.addColumn('string', 'Policy ID');
+          dataTable.addColumn('string', 'Member ID');
+          dataTable.addColumn('number', 'Claim ID');
+          dataTable.addColumn('string', 'Date');
+          dataTable.addColumn('string', 'Reason');
+          dataTable.addColumn('string', 'Priority');
+          dataTable.addColumn('string', 'Summary');
+
+          selectedRecords.forEach(record => {
+            dataTable.addRow([
+              record.patientname,
+              record.agent,
+              record.policyId,
+              record.memberId,
+              record.claimId,
+              record.date,
+              record.reason,
+              record.priority,
+              record.summary
+            ]);
+          });
+
+          tableChart.draw(dataTable, {showRowNumber: true, width: '100%', height: '100%'});
+        }
+      });
+    }
+
+    // Function to get a random number within a specified range
+    function getRandomInRange(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
   </script>
   <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-    }
-    #generate {
-      background-color: green;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    #date-container {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    #date {
-      padding: 8px;
-      font-size: 14px;
-      width: 120px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 50%;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
+    /* Existing styles... */
   </style>
 </head>
 <body>
 
-  <div id="mychart" style="width: 50%;"></div>
+  <!-- 1st Div: Line Chart -->
+  <div id="line-chart"></div>
 
+  <!-- 2nd Div: Date of Filling and Generate Button -->
   <div id="date-container">
     <label for="date">Date of Filling:</label>
     <input type="date" id="date" name="date">
     <button id="generate">Generate</button>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Complaint Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <!-- Chart 2 - Bar Chart -->
-          <div id="chart_2"></div>
-        </td>
-      </tr>
-      <!-- Add more rows as needed -->
-    </tbody>
-  </table>
+  <!-- 3rd Div: Bar Chart -->
+  <div id="bar-chart"></div>
+
+  <!-- 4th Div: Provided Code - Pie Chart and Table -->
+  <div id="chart-container">
+    <!-- Google Charts Pie Chart will be rendered here -->
+    <div id="pieChart"></div>
+
+    <!-- Google Charts Table will be rendered here -->
+    <div id="tableChart"></div>
+  </div>
 
 </body>
-</html> 
-            
+</html>
+    
     
   </plaintext>
 </body>
