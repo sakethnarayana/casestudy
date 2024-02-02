@@ -8,95 +8,172 @@
 <body>
   <plaintext>
 
-     });
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Form</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="/RFQ/data.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages': ['line', 'corechart']});
+    google.charts.setOnLoadCallback(drawCharts);
 
-      var pieData = new google.visualization.DataTable();
-      pieData.addColumn('string', 'Reason');
-      pieData.addColumn('number', 'Count');
+    function drawCharts() {
+      // Chart 2 - Bar Chart
+      var initialData = [
+        ['Priority', 'count', { role: 'style' }],
+        ['Critical', 3, 'color: Magenta'],
+        ['High', 2, 'color: orange'],
+        ['Normal', 5, 'color: green'],
+      ];
 
-      Object.entries(reasonCounts).forEach(([reason, count]) => {
-        pieData.addRow([reason, count]);
+      var data_2 = google.visualization.arrayToDataTable(initialData);
+
+      var options_2 = {
+        title: "Priority",
+        titlePosition: 'none',
+        width: 500,
+        height: 400,
+        legend: { position: "none" },
+      };
+
+      var chart_2 = new google.visualization.BarChart(document.getElementById('bar-chart'));
+      chart_2.draw(data_2, options_2);
+
+      // Handle the "Generate" button click
+      document.getElementById('generate').addEventListener('click', function() {
+        // Get the new date input value
+        var newDate = document.getElementById('date').value;
+
+        // Generate random values within the range of 3, 2, 5
+        var randomValues = [
+          Math.floor(Math.random() * 3) + 3,  // Critical
+          Math.floor(Math.random() * 3) + 2,  // High
+          Math.floor(Math.random() * 3) + 5   // Normal
+        ];
+
+        // Update the DataTable with new values
+        data_2.setValue(0, 1, randomValues[0]); // Critical
+        data_2.setValue(1, 1, randomValues[1]); // High
+        data_2.setValue(2, 1, randomValues[2]); // Normal
+
+        // Redraw the Bar Chart with updated data
+        chart_2.draw(data_2, options_2);
       });
 
-      var pieChart = new google.visualization.PieChart(document.getElementById('pieChart'));
-      pieChart.draw(pieData, {
-        title: 'Reason Distribution',
-        width: 400,
+      // Chart 3 - Pie Chart
+      var data_3 = google.visualization.arrayToDataTable([
+        ['Task', 'Percentage', { role: 'tooltip' }],
+        ['Surgery', 28.6, 'Surgery: 28.6%'],
+        ['Injury', 28.6, 'Injury: 28.6%'],
+        ['Others', 14.3, 'Others: 14.3%'],
+        ['Illness', 14.3, 'Illness: 14.3%'],
+        ['Accident', 14.3, 'Accident: 14.3%']
+      ]);
+
+      var options_3 = {
+        title: 'Pie Chart',
+        width: 500,
+        height: 400,
+      };
+
+      var chart_3 = new google.visualization.PieChart(document.getElementById('pie-chart'));
+      chart_3.draw(data_3, options_3);
+
+      // Chart 1 - Line Chart
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Month');
+      data.addColumn('number', 'Enquiry');
+      data.addColumn('number', 'Complaints');
+      data.addRows([
+        ["July", 1000, 1500],
+        ["August", 1150, 1250],
+        ["September", 1230, 1000],
+        ["October", 1400, 740],
+        ["November", 1520, 660],
+        ["December", 1800, 600],
+      ]);
+
+      var options = {
+        chart: {
+          title: 'Complaints and Enquiries',
+          subtitle: 'Last Six Months',
+        },
+        width: 600,
         height: 300,
-        backgroundColor: '#fff',
-      });
+      };
 
-      var tableData = new google.visualization.DataTable();
-      tableData.addColumn('string', 'Patient Name');
-      tableData.addColumn('string', 'Agent');
-      tableData.addColumn('string', 'Policy ID');
-      tableData.addColumn('string', 'Member ID');
-      tableData.addColumn('number', 'Claim ID');
-      tableData.addColumn('string', 'Date');
-      tableData.addColumn('string', 'Reason');
-      tableData.addColumn('string', 'Priority');
-      tableData.addColumn('string', 'Summary');
-
-      var tableChart = new google.visualization.Table(document.getElementById('tableChart'));
-
-      google.visualization.events.addListener(pieChart, 'select', function () {
-        var selectedItem = pieChart.getSelection()[0];
-        if (selectedItem) {
-          var selectedReason = pieData.getValue(selectedItem.row, 0);
-          var selectedRecords = jsonData.filter(record => record.reason === selectedReason);
-
-          var dataTable = new google.visualization.DataTable();
-          dataTable.addColumn('string', 'Patient Name');
-          dataTable.addColumn('string', 'Agent');
-          dataTable.addColumn('string', 'Policy ID');
-          dataTable.addColumn('string', 'Member ID');
-          dataTable.addColumn('number', 'Claim ID');
-          dataTable.addColumn('string', 'Date');
-          dataTable.addColumn('string', 'Reason');
-          dataTable.addColumn('string', 'Priority');
-          dataTable.addColumn('string', 'Summary');
-
-          selectedRecords.forEach(record => {
-            dataTable.addRow([
-              record.patientname,
-              record.agent,
-              record.policyId,
-              record.memberId,
-              record.claimId,
-              record.date,
-              record.reason,
-              record.priority,
-              record.summary
-            ]);
-          });
-
-          tableChart.draw(dataTable, {showRowNumber: true, width: '100%', height: '100%'});
-        }
-      });
-    }
-
-    // Function to get a random number within a specified range
-    function getRandomInRange(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+      var chart = new google.charts.Line(document.getElementById('line-chart'));
+      chart.draw(data, google.charts.Line.convertOptions(options));
     }
   </script>
   <style>
-    /* Existing styles... */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
+    #generate {
+      background-color: green;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    #date-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      align-items: center;
+    }
+    #line-chart, #bar-chart, #pie-chart {
+      width: 50%;
+    }
+    table {
+      border-collapse: collapse;
+      width: 50%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
-
-  <!-- 1st Div: Line Chart -->
-  <div id="line-chart"></div>
 
   <!-- 2nd Div: Date of Filling and Generate Button -->
   <div id="date-container">
     <label for="date">Date of Filling:</label>
     <input type="date" id="date" name="date">
     <button id="generate">Generate</button>
+  </div>
 
-    
-      
+  <!-- 3rd Div: Bar Chart -->
+  <div id="bar-chart"></div>
+
+  <!-- 4th Div: Pie Chart -->
+  <div id="pie-chart"></div>
+
+  <!-- 1st Div: Line Chart -->
+  <div id="line-chart"></div>
+
+  <!-- 5th Div: Placeholder for Future Content -->
+  <div id="placeholder"></div>
+
+</body>
+</html>
+ 
     
   </plaintext>
 </body>
