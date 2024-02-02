@@ -7,8 +7,7 @@
 </head>
 <body>
   <plaintext>
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -34,8 +33,8 @@
       var options_2 = {
         title: "Priority",
         titlePosition: 'none',
-        width: 500,
-        height: 400,
+        width: 400,
+        height: 300,
         legend: { position: "none" },
       };
 
@@ -63,25 +62,6 @@
         chart_2.draw(data_2, options_2);
       });
 
-      // Chart 3 - Pie Chart
-      var data_3 = google.visualization.arrayToDataTable([
-        ['Task', 'Percentage', { role: 'tooltip' }],
-        ['Surgery', 28.6, 'Surgery: 28.6%'],
-        ['Injury', 28.6, 'Injury: 28.6%'],
-        ['Others', 14.3, 'Others: 14.3%'],
-        ['Illness', 14.3, 'Illness: 14.3%'],
-        ['Accident', 14.3, 'Accident: 14.3%']
-      ]);
-
-      var options_3 = {
-        title: 'Pie Chart',
-        width: 500,
-        height: 400,
-      };
-
-      var chart_3 = new google.visualization.PieChart(document.getElementById('pie-chart'));
-      chart_3.draw(data_3, options_3);
-
       // Chart 1 - Line Chart
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Month');
@@ -101,12 +81,31 @@
           title: 'Complaints and Enquiries',
           subtitle: 'Last Six Months',
         },
-        width: 600,
+        width: 400,
         height: 300,
       };
 
       var chart = new google.charts.Line(document.getElementById('line-chart'));
       chart.draw(data, google.charts.Line.convertOptions(options));
+
+      // Chart 3 - Pie Chart
+      var data_3 = google.visualization.arrayToDataTable([
+        ['Task', 'Percentage', { role: 'tooltip' }],
+        ['Surgery', 28.6, 'Surgery: 28.6%'],
+        ['Injury', 28.6, 'Injury: 28.6%'],
+        ['Others', 14.3, 'Others: 14.3%'],
+        ['Illness', 14.3, 'Illness: 14.3%'],
+        ['Accident', 14.3, 'Accident: 14.3%']
+      ]);
+
+      var options_3 = {
+        title: 'Pie Chart',
+        width: 400,
+        height: 300,
+      };
+
+      var chart_3 = new google.visualization.PieChart(document.getElementById('pie-chart'));
+      chart_3.draw(data_3, options_3);
     }
   </script>
   <style>
@@ -114,9 +113,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
       font-family: 'Arial', sans-serif;
     }
     #generate {
@@ -135,8 +131,13 @@
       margin-top: 10px;
       align-items: center;
     }
-    #line-chart, #bar-chart, #pie-chart {
-      width: 50%;
+    #charts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    #bar-chart, #line-chart, #pie-chart {
+      width: 400px;
     }
     table {
       border-collapse: collapse;
@@ -152,29 +153,33 @@
 </head>
 <body>
 
-  <!-- 2nd Div: Date of Filling and Generate Button -->
+  <!-- 1st Div: Date of Filling and Generate Button -->
   <div id="date-container">
     <label for="date">Date of Filling:</label>
     <input type="date" id="date" name="date">
     <button id="generate">Generate</button>
   </div>
 
-  <!-- 3rd Div: Bar Chart -->
-  <div id="bar-chart"></div>
+  <!-- 2nd Div: Charts Container (Bar Chart and Line Chart) -->
+  <div id="charts-container">
+    <!-- Bar Chart -->
+    <div id="bar-chart"></div>
 
-  <!-- 4th Div: Pie Chart -->
+    <!-- Line Chart -->
+    <div id="line-chart"></div>
+  </div>
+
+  <!-- 3rd Div: Pie Chart -->
   <div id="pie-chart"></div>
 
-  <!-- 1st Div: Line Chart -->
-  <div id="line-chart"></div>
-
-  <!-- 5th Div: Placeholder for Future Content -->
+  <!-- 4th Div: Placeholder for Future Content -->
   <div id="placeholder"></div>
 
 </body>
 </html>
- 
+
     
+      
   </plaintext>
 </body>
 </html>
