@@ -8,238 +8,160 @@
 <body>
   <plaintext>
 
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Charts Pie Chart and Table</title>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Form</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="/RFQ/data.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages': ['line', 'corechart']});
+    google.charts.setOnLoadCallback(drawCharts);
 
-        h1 {
-            color: #008CBA;
-        }
+    function drawCharts() {
+      // Chart 1 - Line Chart
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Month');
+      data.addColumn('number', 'Enquiry');
+      data.addColumn('number', 'Complaints');
+      data.addRows([
+        ["July", 1000, 1500],
+        ["August", 1150, 1250],
+        ["September", 1230, 1000],
+        ["October", 1400, 740],
+        ["November", 1520, 660],
+        ["December", 1800, 600],
+      ]);
 
-        p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
+      var options = {
+        chart: {
+          title: 'Complaints and Enquiries',
+          subtitle: 'Last Six Months',
+        },
+        width: 600,
+        height: 300,
+      };
 
-        #chart-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 30px;
-        }
+      var chart = new google.charts.Line(document.getElementById('mychart'));
+      chart.draw(data, google.charts.Line.convertOptions(options));
 
-        #pieChart, #tableChart {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            padding: 20px;
-            background-color: #fff;
-        }
+      // Chart 2 - Bar Chart
+      var initialData = [
+        ['Priority', 'count', { role: 'style' }],
+        ['Critical', 3, 'color: Magenta'],
+        ['High', 2, 'color: orange'],
+        ['Normal', 5, 'color: green'],
+      ];
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+      var data_2 = google.visualization.arrayToDataTable(initialData);
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+      var options_2 = {
+        title: "Priority",
+        titlePosition: 'none',
+        width: 500,
+        height: 00,
+        legend: { position: "none" },
+      };
 
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+      var chart_2 = new google.visualization.BarChart(document.getElementById('chart_2'));
+      chart_2.draw(data_2, options_2);
+
+      // Handle the "Generate" button click
+      document.getElementById('generate').addEventListener('click', function() {
+        // Get the new date input value
+        var newDate = document.getElementById('date').value;
+
+        // Generate random values within the range of 3, 2, 5
+        var randomValues = [
+          Math.floor(Math.random() * 3) + 3,  // Critical
+          Math.floor(Math.random() * 3) + 2,  // High
+          Math.floor(Math.random() * 3) + 5   // Normal
+        ];
+
+        // Update the DataTable with new values
+        data_2.setValue(0, 1, randomValues[0]); // Critical
+        data_2.setValue(1, 1, randomValues[1]); // High
+        data_2.setValue(2, 1, randomValues[2]); // Normal
+
+        // Redraw the Bar Chart with updated data
+        chart_2.draw(data_2, options_2);
+      });
+    }
+  </script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
+    #generate {
+      background-color: green;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    #date-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    #date {
+      padding: 8px;
+      font-size: 14px;
+      width: 120px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 50%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Welcome to My Web Page</h1>
-    <p>This is a simple web page created with HTML, CSS, and JavaScript. The page includes a Google Charts pie chart and a table.</p>
+  <div id="mychart" style="width: 50%;"></div>
 
-    <div id="chart-container">
-        <!-- Google Charts Pie Chart will be rendered here -->
-        <div id="pieChart"></div>
+  <div id="date-container">
+    <label for="date">Date of Filling:</label>
+    <input type="date" id="date" name="date">
+    <button id="generate">Generate</button>
+  </div>
 
-        <!-- Google Charts Table will be rendered here -->
-        <div id="tableChart"></div>
-    </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Complaint Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <!-- Chart 2 - Bar Chart -->
+          <div id="chart_2"></div>
+        </td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
 
-    <script>
-        google.charts.load('current', {'packages':['corechart', 'table']});
-        google.charts.setOnLoadCallback(drawCharts);
-
-        function drawCharts() {
-            var jsonData = [
-  {
-    "patientName": "Linda",
-    "agent": "Michael",
-    "policyId": "L2468",
-    "memberId": "W2468",
-    "claimId": 2468,
-    "date": "12/6/20",
-    "reason": "Surgery",
-    "priority": "High",
-    "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
-  },
-  {
-    "patientName": "Jack",
-    "agent": "Olivia",
-    "policyId": "J3690",
-    "memberId": "U3690",
-    "claimId": 3690,
-    "date": "18/3/22",
-    "reason": "Injury",
-    "priority": "Medium",
-    "summary": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident."
-  },
-  {
-    "patientName": "Sophie",
-    "agent": "Robert",
-    "policyId": "S9876",
-    "memberId": "Y9876",
-    "claimId": 9876,
-    "date": "5/9/23",
-    "reason": "Others",
-    "priority": "Low",
-    "summary": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  },
-  {
-    "patientName": "Daniel",
-    "agent": "Victoria",
-    "policyId": "D5555",
-    "memberId": "V5555",
-    "claimId": 5555,
-    "date": "7/11/21",
-    "reason": "Illness",
-    "priority": "Critical",
-    "summary": "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
-  },
-  {
-    "patientName": "Mia",
-    "agent": "Charles",
-    "policyId": "M1234",
-    "memberId": "X1234",
-    "claimId": 1234,
-    "date": "14/8/20",
-    "reason": "Accident",
-    "priority": "High",
-    "summary": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident."
-  },
-  {
-    "patientName": "Ethan",
-    "agent": "Isabella",
-    "policyId": "E7890",
-    "memberId": "I7890",
-    "claimId": 7890,
-    "date": "3/2/22",
-    "reason": "Surgery",
-    "priority": "Medium",
-    "summary": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet."
-  },
-  {
-    "patientName": "Ava",
-    "agent": "Christopher",
-    "policyId": "A2468",
-    "memberId": "C2468",
-    "claimId": 2468,
-    "date": "9/5/21",
-    "reason": "Injury",
-    "priority": "Low",
-    "summary": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  }
-];
-
-
-            var reasonCounts = {};
-            jsonData.forEach(record => {
-                reasonCounts[record.reason] = (reasonCounts[record.reason] || 0) + 1;
-            });
-
-            var pieData = new google.visualization.DataTable();
-            pieData.addColumn('string', 'Reason');
-            pieData.addColumn('number', 'Count');
-
-            Object.entries(reasonCounts).forEach(([reason, count]) => {
-                pieData.addRow([reason, count]);
-            });
-
-            var pieChart = new google.visualization.PieChart(document.getElementById('pieChart'));
-            pieChart.draw(pieData, {
-                title: 'Reason Distribution',
-                width: 400,
-                height: 300,
-                backgroundColor: '#fff',
-            });
-
-            var tableData = new google.visualization.DataTable();
-            tableData.addColumn('string', 'Patient Name');
-            tableData.addColumn('string', 'Agent');
-            tableData.addColumn('string', 'Policy ID');
-            tableData.addColumn('string', 'Member ID');
-            tableData.addColumn('number', 'Claim ID');
-            tableData.addColumn('string', 'Date');
-            tableData.addColumn('string', 'Reason');
-            tableData.addColumn('string', 'Priority');
-            tableData.addColumn('string', 'Summary');
-
-            var tableChart = new google.visualization.Table(document.getElementById('tableChart'));
-
-            google.visualization.events.addListener(pieChart, 'select', function () {
-                var selectedItem = pieChart.getSelection()[0];
-                if (selectedItem) {
-                    var selectedReason = pieData.getValue(selectedItem.row, 0);
-                    var selectedRecords = jsonData.filter(record => record.reason === selectedReason);
-
-                    var dataTable = new google.visualization.DataTable();
-                    dataTable.addColumn('string', 'Patient Name');
-                    dataTable.addColumn('string', 'Agent');
-                    dataTable.addColumn('string', 'Policy ID');
-                    dataTable.addColumn('string', 'Member ID');
-                    dataTable.addColumn('number', 'Claim ID');
-                    dataTable.addColumn('string', 'Date');
-                    dataTable.addColumn('string', 'Reason');
-                    dataTable.addColumn('string', 'Priority');
-                    dataTable.addColumn('string', 'Summary');
-
-                    selectedRecords.forEach(record => {
-                        dataTable.addRow([
-                            record.patientname,
-                            record.agent,
-                            record.policyId,
-                            record.memberId,
-                            record.claimId,
-                            record.date,
-                            record.reason,
-                            record.priority,
-                            record.summary
-                        ]);
-                    });
-
-                    tableChart.draw(dataTable, {showRowNumber: true, width: '100%', height: '100%'});
-                }
-            });
-        }
-    </script>
 </body>
-</html>
-                     
-
-
+</html> 
+            
     
   </plaintext>
 </body>
