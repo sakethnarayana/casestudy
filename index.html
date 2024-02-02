@@ -7,7 +7,8 @@
 </head>
 <body>
   <plaintext>
-    <!DOCTYPE html>
+    
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -16,7 +17,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="/RFQ/data.js"></script>
   <script type="text/javascript">
-    google.charts.load('current', {'packages': ['line', 'corechart', 'table']});
+    google.charts.load('current', {'packages': ['corechart', 'table']});
     google.charts.setOnLoadCallback(drawCharts);
 
     function drawCharts() {
@@ -154,32 +155,6 @@
         var table = new google.visualization.Table(document.getElementById('table-container'));
         table.draw(data_table, { showRowNumber: true, width: '100%', height: '100%' });
       }
-
-      // Chart 3 - Line Chart
-      var data_3 = new google.visualization.DataTable();
-      data_3.addColumn('string', 'Month');
-      data_3.addColumn('number', 'Enquiry');
-      data_3.addColumn('number', 'Complaints');
-      data_3.addRows([
-        ["July", 1000, 1500],
-        ["August", 1150, 1250],
-        ["September", 1230, 1000],
-        ["October", 1400, 740],
-        ["November", 1520, 660],
-        ["December", 1800, 600],
-      ]);
-
-      var options_3 = {
-        chart: {
-          title: 'Complaints and Enquiries',
-          subtitle: 'Last Six Months',
-        },
-        width: '100%',
-        height: '100%',
-      };
-
-      var chart_3 = new google.charts.Line(document.getElementById('line-chart'));
-      chart_3.draw(data_3, google.charts.Line.convertOptions(options_3));
     }
   </script>
   <style>
@@ -195,17 +170,17 @@
       height: 100%;
     }
 
-    .div1, .div2, .div3 {
+    .div1, .div2 {
       flex: 1;
       display: flex;
       flex-direction: row;
     }
 
-    .div1 > div, .div2 > div, .div3 > div {
+    .div1 > div, .div2 > div {
       flex: 1;
     }
 
-    #bar-chart, #date-container, #pie-chart, #table-container, #line-chart {
+    #bar-chart, #date-container, #pie-chart, #table-container {
       width: 100%;
       height: 100%;
     }
@@ -256,17 +231,12 @@
       <!-- Tabular Information -->
       <div class="table-container" id="table-container"></div>
     </div>
-
-    <!-- 3rd Div: Line Chart -->
-    <div class="div3">
-      <div id="line-chart"></div>
-    </div>
   </div>
 
 </body>
 </html>
-          
-      
+
+    
               
                 
   </plaintext>
