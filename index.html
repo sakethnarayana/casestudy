@@ -8,98 +8,7 @@
 <body>
   <plaintext>
 
-     <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complaint Form</title>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript" src="/RFQ/data.js"></script>
-  <script type="text/javascript">
-    google.charts.load('current', {'packages': ['line', 'corechart', 'table']});
-    google.charts.setOnLoadCallback(drawCharts);
-
-    function drawCharts() {
-      // Chart 1 - Line Chart
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Month');
-      data.addColumn('number', 'Enquiry');
-      data.addColumn('number', 'Complaints');
-      data.addRows([
-        ["July", 1000, 1500],
-        ["August", 1150, 1250],
-        ["September", 1230, 1000],
-        ["October", 1400, 740],
-        ["November", 1520, 660],
-        ["December", 1800, 600],
-      ]);
-
-      var options = {
-        chart: {
-          title: 'Complaints and Enquiries',
-          subtitle: 'Last Six Months',
-        },
-        width: 600,
-        height: 300,
-      };
-
-      var chart = new google.charts.Line(document.getElementById('line-chart'));
-      chart.draw(data, google.charts.Line.convertOptions(options));
-
-      // Existing code for Date of Filling, Generate Button...
-
-      // Chart 2 - Bar Chart
-      var initialData = [
-        ['Priority', 'count', { role: 'style' }],
-        ['Critical', getRandomInRange(3, 5), 'color: Magenta'],
-        ['High', getRandomInRange(3, 5), 'color: orange'],
-        ['Normal', getRandomInRange(3, 5), 'color: green'],
-      ];
-
-      var data_2 = google.visualization.arrayToDataTable(initialData);
-
-      var options_2 = {
-        title: "Priority",
-        titlePosition: 'none',
-        width: 500,
-        height: 400,
-        legend: { position: "none" },
-      };
-
-      var chart_2 = new google.visualization.BarChart(document.getElementById('bar-chart'));
-      chart_2.draw(data_2, options_2);
-
-      // Handle the "Generate" button click
-      document.getElementById('generate').addEventListener('click', function() {
-        // Get the new date input value
-        var newDate = document.getElementById('date').value;
-
-        // Generate random values within the range of 3, 4, 5
-        var randomValues = [
-          getRandomInRange(3, 5),  // Critical
-          getRandomInRange(3, 5),  // High
-          getRandomInRange(3, 5)   // Normal
-        ];
-
-        // Update the DataTable with new values
-        data_2.setValue(0, 1, randomValues[0]); // Critical
-        data_2.setValue(1, 1, randomValues[1]); // High
-        data_2.setValue(2, 1, randomValues[2]); // Normal
-
-        // Redraw the Bar Chart with updated data
-        chart_2.draw(data_2, options_2);
-      });
-
-      // Provided Code - Pie Chart and Table...
-      var jsonData = [
-        // ... (the provided data)
-      ];
-
-      var reasonCounts = {};
-      jsonData.forEach(record => {
-        reasonCounts[record.reason] = (reasonCounts[record.reason] || 0) + 1;
-      });
+     });
 
       var pieData = new google.visualization.DataTable();
       pieData.addColumn('string', 'Reason');
@@ -185,23 +94,9 @@
     <label for="date">Date of Filling:</label>
     <input type="date" id="date" name="date">
     <button id="generate">Generate</button>
-  </div>
 
-  <!-- 3rd Div: Bar Chart -->
-  <div id="bar-chart"></div>
-
-  <!-- 4th Div: Provided Code - Pie Chart and Table -->
-  <div id="chart-container">
-    <!-- Google Charts Pie Chart will be rendered here -->
-    <div id="pieChart"></div>
-
-    <!-- Google Charts Table will be rendered here -->
-    <div id="tableChart"></div>
-  </div>
-
-</body>
-</html>
     
+      
     
   </plaintext>
 </body>
