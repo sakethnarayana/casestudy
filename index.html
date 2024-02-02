@@ -7,7 +7,8 @@
 </head>
 <body>
   <plaintext>
-<!DOCTYPE html>
+
+    <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -16,7 +17,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="/RFQ/data.js"></script>
   <script type="text/javascript">
-    google.charts.load('current', {'packages': ['line', 'corechart']});
+    google.charts.load('current', {'packages': ['line', 'corechart', 'table']});
     google.charts.setOnLoadCallback(drawCharts);
 
     function drawCharts() {
@@ -106,6 +107,44 @@
 
       var chart_3 = new google.visualization.PieChart(document.getElementById('pie-chart'));
       chart_3.draw(data_3, options_3);
+
+      // Event listener for pie chart slices
+      google.visualization.events.addListener(chart_3, 'select', function() {
+        var selectedItem = chart_3.getSelection()[0];
+        if (selectedItem) {
+          displayTable(selectedItem.row + 1); // Row index starts from 1 in the data table
+        }
+      });
+
+      // Display table function
+      function displayTable(pieSliceIndex) {
+        var data_table = new google.visualization.DataTable();
+        data_table.addColumn('string', 'Patient Name');
+        data_table.addColumn('string', 'Agent');
+        data_table.addColumn('string', 'Policy ID');
+        data_table.addColumn('string', 'Member ID');
+        data_table.addColumn('string', 'Claim ID');
+        data_table.addColumn('string', 'Date');
+        data_table.addColumn('string', 'Reason');
+        data_table.addColumn('string', 'Priority');
+        data_table.addColumn('string', 'Summary');
+
+        // Sample data - replace this with your actual data retrieval logic
+        var tableData = [
+          ['John Doe', 'Agent 1', 'P12345', 'M67890', 'C54321', '2024-02-15', 'Surgery', 'Critical', 'Summary 1'],
+          ['Jane Smith', 'Agent 2', 'P67890', 'M12345', 'C98765', '2024-02-16', 'Injury', 'High', 'Summary 2'],
+          // Add more rows as needed
+        ];
+
+        // Add rows to the data table
+        for (var i = 0; i < tableData.length; i++) {
+          data_table.addRow(tableData[i]);
+        }
+
+        // Create and draw the table
+        var table = new google.visualization.Table(document.getElementById('table-container'));
+        table.draw(data_table, {showRowNumber: true, width: '300px', height: '200px'});
+      }
     }
   </script>
   <style>
@@ -135,14 +174,17 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+      align-items: center;
     }
     #bar-chart, #line-chart, #pie-chart {
       width: 400px;
     }
+    #table-container {
+      margin-top: 20px;
+    }
     table {
       border-collapse: collapse;
-      width: 50%;
-      margin-top: 20px;
+      width: 100%;
     }
     th, td {
       border: 1px solid #ddd;
@@ -172,13 +214,15 @@
   <!-- 3rd Div: Pie Chart -->
   <div id="pie-chart"></div>
 
-  <!-- 4th Div: Placeholder for Future Content -->
+  <!-- 4th Div: Table Container -->
+  <div id="table-container"></div>
+
+  <!-- 5th Div: Placeholder for Future Content -->
   <div id="placeholder"></div>
 
 </body>
 </html>
 
-    
       
   </plaintext>
 </body>
