@@ -8,301 +8,236 @@
 <body>
   <plaintext>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Google Charts Pie Chart and Table</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <style>
-        .search {
-            display: flex;
-            margin: 20px;
-            padding: 10px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
             text-align: center;
+            color: #333;
         }
-        .inside {
-            width: 25%;
+
+        h1 {
+            color: #008CBA;
         }
-        .bottom {
-            margin: 30px;
+
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        #chart-container {
             display: flex;
-            text-align: center;
+            justify-content: space-around;
+            margin-top: 30px;
         }
-         .inside2 {
-            text-align: left;
-            margin-right: auto;
-            margin-left: 0;
-        } 
-        .table {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .tablehead {
-            background: #008000;
-            color: white;
-        }
-        td {
-            padding: 2px;
-        }
-        table, th, td {
+
+        #pieChart, #tableChart {
             border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        table {
+            width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
         }
-        thead tr td {
-            white-space: nowrap;
-            text-align: center;
-            font-size: small;
-            font-weight: bold;
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
-        .btn {
-            -webkit-border-radius: 7;
-            -moz-border-radius: 7;
-            border-radius: 5px;
-            font-family: system-ui;
-            color: #ffffff;
-            font-size: 12px;
-            background: #008000;
-            padding: 10px 20px 10px 20px;
-            text-decoration: none;
-        }
-        .btn:hover {
-            background: #5C9A1B;
-            text-decoration: none;
+
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
-<body style="background-color: #f3f3f3; font-family: system-ui !important">
-    <div><h4>Recently Modified Records</h4></div>
-    <div class="search">
-        <div class="inside" >
-            <label for="type">Type:</label>
-            <select name="type" id="type">
-            <option value="">None</option>
-            <option value="complaint">complaint</option>
-            <option value="Inquiry">Inquiry</option>
-            </select>
-        </div>
-        <div class="inside" >
-            <label for="priority-type">Priority:</label>
-            <select name="priority-type" id="priority-type">
-            <option value="">None</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-            </select>
-        </div>
-        <div class="inside">
-            <button class="btn" onclick="applyFilters()">Filter</button>
-        </div>
+<body>
+
+    <h1>Welcome to My Web Page</h1>
+    <p>This is a simple web page created with HTML, CSS, and JavaScript. The page includes a Google Charts pie chart and a table.</p>
+
+    <div id="chart-container">
+        <!-- Google Charts Pie Chart will be rendered here -->
+        <div id="pieChart"></div>
+
+        <!-- Google Charts Table will be rendered here -->
+        <div id="tableChart"></div>
     </div>
-    <div class="table">
-        <table>
-            <thead  class="tablehead">
-                <tr>
-                    <td>Details</td>
-                    <td>Case ID</td> 
-                    <td>Patient Name</td>
-                    <td>Provider Name</td>
-                    <td>Type</td>
-                    <td>Priority</td>
-                    <td>Summary</td>
-                </tr>
-            </thead>
-            <tbody id="data" class="tablebody">
-                <!-- populated from js file -->
-            </tbody>
-        </table>
-    </div>
-    <div class="bottom">
-        <div class="inside2" >
-            <input type="text" id="search_value" placeholder="Enter Case ID">
-            <button class="btn" onclick="searchCase()">Search</button>
-            <button class="btn" id="new_transcript">New Transcription</button>
-        </div>
-    </div>
+
     <script>
-        json_data=[
-        {
-            "case_id":"case_001",
-            "patientname": "Saurabh",
-            "agent": "Sarah",
-            "policyId": "C1244",
-            "memberId": "F1234",
-            "claimId": 1234,
-            "date": "23/9/23",
-            "status":"New",
-            "owner":"Null",
-            "type":"Complaint",
-            "reason": "Lorem ipsum, dolor",
-            "priority": "high",
-            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-         },
-        {
-            "case_id":"case_002",
-            "patientname": "Sumanth",
-            "agent": "Sagar",
-            "policyId": "C1245",
-            "memberId": "F1234",
-            "claimId": 1234,
-            "date": "2/12/23",
-            "status":"In progress",
-            "owner":"Reviewer 1",
-            "type":"Inquiry",
-            "reason": "Lorem ipsum, dolor",
-            "priority": "low",
-            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-         },
-        {
-            "case_id":"case_003",
-            "patientname": "Susheel",
-            "agent": "Ali",
-            "policyId": "C1246",
-            "memberId": "F1234",
-            "claimId": 1234,
-            "date": "23/2/23",
-            "status":"Completed",
-            "owner":"Reviewer 3",
-            "type":"Complaint",
-            "reason": "Lorem ipsum, dolor",
-            "priority": "medium",
-            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-         },
-        {
-            "case_id":"case_004",
-            "patientname": "Vinay",
-            "agent": "Subhrut",
-            "policyId": "C1247",
-            "memberId": "F1234",
-            "claimId": 1234,
-            "date": "23/11/23",
-            "status":"In progress",
-            "owner":"Reviewer 2",
-            "type":"Complaint",
-            "reason": "Lorem ipsum, dolor",
-            "priority": "low",
-            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-         },
-        {
-            "case_id":"case_005",
-            "patientname": "Sushanth",
-            "agent": "Sugam",
-            "policyId": "C1248",
-            "memberId": "F1234",
-            "claimId": 1234,
-            "date": "23/12/27",
-            "status":"New",
-            "owner":"Null", 
-            "type":"Inquiry",
-            "reason": "Lorem ipsum, dolor",
-            "priority": "low",
-            "summary" :"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga nesciunt quidem perferendis ipsum temporibus molestias veritatis nisi ullam, esse tenetur?"
-         }
-    ]
+        google.charts.load('current', {'packages':['corechart', 'table']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            var jsonData = [
+  {
+    "patientName": "Linda",
+    "agent": "Michael",
+    "policyId": "L2468",
+    "memberId": "W2468",
+    "claimId": 2468,
+    "date": "12/6/20",
+    "reason": "Surgery",
+    "priority": "High",
+    "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+  },
+  {
+    "patientName": "Jack",
+    "agent": "Olivia",
+    "policyId": "J3690",
+    "memberId": "U3690",
+    "claimId": 3690,
+    "date": "18/3/22",
+    "reason": "Injury",
+    "priority": "Medium",
+    "summary": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident."
+  },
+  {
+    "patientName": "Sophie",
+    "agent": "Robert",
+    "policyId": "S9876",
+    "memberId": "Y9876",
+    "claimId": 9876,
+    "date": "5/9/23",
+    "reason": "Others",
+    "priority": "Low",
+    "summary": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  },
+  {
+    "patientName": "Daniel",
+    "agent": "Victoria",
+    "policyId": "D5555",
+    "memberId": "V5555",
+    "claimId": 5555,
+    "date": "7/11/21",
+    "reason": "Illness",
+    "priority": "Critical",
+    "summary": "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
+  },
+  {
+    "patientName": "Mia",
+    "agent": "Charles",
+    "policyId": "M1234",
+    "memberId": "X1234",
+    "claimId": 1234,
+    "date": "14/8/20",
+    "reason": "Accident",
+    "priority": "High",
+    "summary": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident."
+  },
+  {
+    "patientName": "Ethan",
+    "agent": "Isabella",
+    "policyId": "E7890",
+    "memberId": "I7890",
+    "claimId": 7890,
+    "date": "3/2/22",
+    "reason": "Surgery",
+    "priority": "Medium",
+    "summary": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet."
+  },
+  {
+    "patientName": "Ava",
+    "agent": "Christopher",
+    "policyId": "A2468",
+    "memberId": "C2468",
+    "claimId": 2468,
+    "date": "9/5/21",
+    "reason": "Injury",
+    "priority": "Low",
+    "summary": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  }
+];
 
 
-        function applyFilters() {
-            const typeFilter = document.getElementById('type').value;
-            const priorityFilter = document.getElementById('priority-type').value;
+            var reasonCounts = {};
+            jsonData.forEach(record => {
+                reasonCounts[record.reason] = (reasonCounts[record.reason] || 0) + 1;
+            });
 
-            let filteredData = json_data;
+            var pieData = new google.visualization.DataTable();
+            pieData.addColumn('string', 'Reason');
+            pieData.addColumn('number', 'Count');
 
-            if (typeFilter !== '') {
-                filteredData = filteredData.filter(record => record.type === typeFilter);
-            }
+            Object.entries(reasonCounts).forEach(([reason, count]) => {
+                pieData.addRow([reason, count]);
+            });
 
-            if (priorityFilter !== '') {
-                filteredData = filteredData.filter(record => record.priority === priorityFilter);
-            }
+            var pieChart = new google.visualization.PieChart(document.getElementById('pieChart'));
+            pieChart.draw(pieData, {
+                title: 'Reason Distribution',
+                width: 400,
+                height: 300,
+                backgroundColor: '#fff',
+            });
 
-            // Update the table with the filtered data
-            updateTable(filteredData);
-        }
+            var tableData = new google.visualization.DataTable();
+            tableData.addColumn('string', 'Patient Name');
+            tableData.addColumn('string', 'Agent');
+            tableData.addColumn('string', 'Policy ID');
+            tableData.addColumn('string', 'Member ID');
+            tableData.addColumn('number', 'Claim ID');
+            tableData.addColumn('string', 'Date');
+            tableData.addColumn('string', 'Reason');
+            tableData.addColumn('string', 'Priority');
+            tableData.addColumn('string', 'Summary');
 
-        function updateTable(data) {
-            let placeholder = document.getElementById("data");
-            let out="";
-            for(let products of data){
-                out+=`<tr>
-                <td><a href="#" onclick="redirectToDetails('${products.case_id}')">Details</a></td>
-                <td>${products.case_id}</td>
-                <td>${products.patientname}</td>
-                <td>${products.agent}</td>
-                <td>${products.type}</td>
-                <td>${products.priority}</td>
-                <td>${products.summary}</td>
-                </tr>`;
-            }
-            if (data.length === 0) {
-                out = '<tr><td colspan="7">No records found</td></tr>';
-            }
-            placeholder.innerHTML=out;
-        }
+            var tableChart = new google.visualization.Table(document.getElementById('tableChart'));
 
-        function searchCase() {
-            const caseId = document.getElementById('search_value').value;
+            google.visualization.events.addListener(pieChart, 'select', function () {
+                var selectedItem = pieChart.getSelection()[0];
+                if (selectedItem) {
+                    var selectedReason = pieData.getValue(selectedItem.row, 0);
+                    var selectedRecords = jsonData.filter(record => record.reason === selectedReason);
 
-            if (caseId === '') {
-                alert('Please enter a Case ID');
-                return;
-            }
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'Patient Name');
+                    dataTable.addColumn('string', 'Agent');
+                    dataTable.addColumn('string', 'Policy ID');
+                    dataTable.addColumn('string', 'Member ID');
+                    dataTable.addColumn('number', 'Claim ID');
+                    dataTable.addColumn('string', 'Date');
+                    dataTable.addColumn('string', 'Reason');
+                    dataTable.addColumn('string', 'Priority');
+                    dataTable.addColumn('string', 'Summary');
 
-            const foundCase = json_data.find(record => record.case_id === caseId);
+                    selectedRecords.forEach(record => {
+                        dataTable.addRow([
+                            record.patientname,
+                            record.agent,
+                            record.policyId,
+                            record.memberId,
+                            record.claimId,
+                            record.date,
+                            record.reason,
+                            record.priority,
+                            record.summary
+                        ]);
+                    });
 
-            if (foundCase) {
-                // Update the table with the found case
-                updateTable([foundCase]);
-            } else {
-                // Case not found
-                updateTable([]);
-            }
-        }
-
-        // Initial table population
-        updateTable(json_data);
-
-
-    //    function redirectToDetails(caseId) {
-      //      const detailsPageURL = `details_page.html?caseId=${caseId}`;
-            
-        //    window.location.href = detailsPageURL;
-       // }
-
-
-
-        function redirectToDetails(caseId) {
-            let detailsPageURL;
-        
-            // Check the case ID and set the details page URL accordingly
-            switch (caseId) {
-                case 'case_001':
-                    detailsPageURL = 'dummypage1.html';
-                    break;
-                case 'case_002':
-                    detailsPageURL = 'dummypage2.html';
-                    break;
-                // Add more cases as needed
-        
-                default:
-                    // Default case if the case ID doesn't match any specific case
-                    detailsPageURL = 'default_page.html';
-            }
-        
-            // Redirect to the details page
-            window.location.href = detailsPageURL;
-        }
-        
-
-        const newbutton = document.getElementById('new_transcript');
-        if (newbutton) {
-            newbutton.addEventListener('click', function() {
-                loadContent('upload_file');
+                    tableChart.draw(dataTable, {showRowNumber: true, width: '100%', height: '100%'});
+                }
             });
         }
     </script>
 </body>
 </html>
+                     
 
 
     
