@@ -8,235 +8,194 @@
 <body>
   <plaintext>
     
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Colorful Divs</title>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript" src="/RFQ/data.js"></script>
-  <script type="text/javascript">
-    google.charts.load('current', {'packages': ['corechart', 'table']});
-    google.charts.setOnLoadCallback(drawCharts);
-
-    function drawCharts() {
-      // Chart 1 - Bar Chart
-      var initialData = [
-        ['Priority', 'count', { role: 'style' }],
-        ['Critical', 3, 'color: Magenta'],
-        ['High', 2, 'color: orange'],
-        ['Normal', 5, 'color: green'],
-      ];
-
-      var data_1 = google.visualization.arrayToDataTable(initialData);
-
-      var options_1 = {
-        title: "Priority",
-        titlePosition: 'none',
-        width: '100%',
-        height: '100%',
-        legend: { position: "none" },
-      };
-
-      var chart_1 = new google.visualization.BarChart(document.getElementById('bar-chart'));
-      chart_1.draw(data_1, options_1);
-
-      // Handle the "Generate" button click
-      document.getElementById('generate').addEventListener('click', function() {
-        // Get the new date input value
-        var newDate = document.getElementById('date').value;
-
-        // Generate random values within the range of 3, 2, 5
-        var randomValues = [
-          Math.floor(Math.random() * 3) + 3,  // Critical
-          Math.floor(Math.random() * 3) + 2,  // High
-          Math.floor(Math.random() * 3) + 5   // Normal
-        ];
-
-        // Update the DataTable with new values
-        data_1.setValue(0, 1, randomValues[0]); // Critical
-        data_1.setValue(1, 1, randomValues[1]); // High
-        data_1.setValue(2, 1, randomValues[2]); // Normal
-
-        // Redraw the Bar Chart with updated data
-        chart_1.draw(data_1, options_1);
-      });
-
-      // Chart 2 - Pie Chart
-      var data_2 = google.visualization.arrayToDataTable([
-        ['Task', 'Percentage', { role: 'tooltip' }],
-        ['Surgery', 28.6, 'Surgery: 28.6%'],
-        ['Injury', 28.6, 'Injury: 28.6%'],
-        ['Others', 14.3, 'Others: 14.3%'],
-        ['Illness', 14.3, 'Illness: 14.3%'],
-        ['Accident', 14.3, 'Accident: 14.3%']
-      ]);
-
-      var options_2 = {
-        title: 'Pie Chart',
-        width: '100%',
-        height: '100%',
-      };
-
-      var chart_2 = new google.visualization.PieChart(document.getElementById('pie-chart'));
-      chart_2.draw(data_2, options_2);
-
-      // Event listener for pie chart slices
-      google.visualization.events.addListener(chart_2, 'select', function() {
-        var selectedItem = chart_2.getSelection()[0];
-        if (selectedItem) {
-          displayTable(selectedItem.row + 1); // Row index starts from 1 in the data table
-        }
-      });
-
-      // Display table function
-      function displayTable(pieSliceIndex) {
-        var data_table = new google.visualization.DataTable();
-        data_table.addColumn('string', 'Patient Name');
-        data_table.addColumn('string', 'Agent');
-        data_table.addColumn('string', 'Policy ID');
-        data_table.addColumn('string', 'Member ID');
-        data_table.addColumn('string', 'Claim ID');
-        data_table.addColumn('string', 'Date');
-        data_table.addColumn('string', 'Reason');
-        data_table.addColumn('string', 'Priority');
-        data_table.addColumn('string', 'Summary');
-
-        // Sample data - replace this with your actual data retrieval logic
-        var tableData;
-        switch (pieSliceIndex) {
-          case 1: // 1st piece
-            tableData = [
-              ['John Doe', 'Agent 1', 'P12345', 'M67890', 'C54321', '2024-02-15', 'Surgery', 'Critical', 'Summary 1'],
-              ['Jane Smith', 'Agent 2', 'P67890', 'M12345', 'C98765', '2024-02-16', 'Surgery', 'Critical', 'Summary 2'],
-              ['Bob Johnson', 'Agent 3', 'P54321', 'M45678', 'C87654', '2024-02-17', 'Surgery', 'High', 'Summary 3'],
-              ['Alice White', 'Agent 4', 'P98765', 'M34567', 'C76543', '2024-02-18', 'Surgery', 'Normal', 'Summary 4'],
-            ];
-            break;
-          case 2: // 2nd piece
-            tableData = [
-              ['Mark Miller', 'Agent 5', 'P65432', 'M23456', 'C65432', '2024-02-19', 'Injury', 'Critical', 'Summary 5'],
-              ['Emily Davis', 'Agent 6', 'P34567', 'M12345', 'C54321', '2024-02-20', 'Injury', 'High', 'Summary 6'],
-              ['Chris Brown', 'Agent 7', 'P23456', 'M87654', 'C43210', '2024-02-21', 'Injury', 'Normal', 'Summary 7'],
-              ['Sophie Wilson', 'Agent 8', 'P87654', 'M76543', 'C67890', '2024-02-22', 'Injury', 'Critical', 'Summary 8'],
-              ['David Lee', 'Agent 9', 'P54321', 'M98765', 'C87654', '2024-02-23', 'Injury', 'High', 'Summary 9'],
-            ];
-            break;
-          case 3: // 3rd piece
-            tableData = [
-              ['Michael Smith', 'Agent 10', 'P12345', 'M23456', 'C34567', '2024-02-24', 'Others', 'Normal', 'Summary 10'],
-              ['Jennifer Taylor', 'Agent 11', 'P98765', 'M87654', 'C76543', '2024-02-25', 'Others', 'Critical', 'Summary 11'],
-            ];
-            break;
-          case 4: // 4th piece
-            tableData = [
-              ['Liam Johnson', 'Agent 12', 'P54321', 'M67890', 'C78901', '2024-02-26', 'Illness', 'High', 'Summary 12'],
-              ['Olivia Davis', 'Agent 13', 'P45678', 'M56789', 'C67890', '2024-02-27', 'Illness', 'Critical', 'Summary 13'],
-              ['Noah White', 'Agent 14', 'P87654', 'M43210', 'C56789', '2024-02-28', 'Illness', 'Normal', 'Summary 14'],
-            ];
-            break;
-          case 5: // 5th piece
-            tableData = [
-              ['Emma Brown', 'Agent 15', 'P23456', 'M12345', 'C98765', '2024-03-01', 'Accident', 'Normal', 'Summary 15'],
-              ['William Wilson', 'Agent 16', 'P65432', 'M23456', 'C54321', '2024-03-02', 'Accident', 'High', 'Summary 16'],
-            ];
-            break;
-          default:
-            tableData = [];
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
-        // Add rows to the data table
-        for (var i = 0; i < tableData.length; i++) {
-          data_table.addRow(tableData[i]);
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        // Create and draw the table
-        var table = new google.visualization.Table(document.getElementById('table-container'));
-        table.draw(data_table, { showRowNumber: true, width: '100%', height: '100%' });
-      }
-    }
-  </script>
-  <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      background-color: #f3f3f3;
-    }
+        .form-container {
+            display: flex;
+            flex: 1;
+            overflow-y: auto;
+        }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
+        .left-half {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #ccc;
+        }
 
-    .div1, .div2 {
-      flex: 1;
-      display: flex;
-      flex-direction: row;
-    }
+        .right-half {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 20px;
+        }
 
-    .div1 > div, .div2 > div {
-      flex: 1;
-    }
+        .transcript-container {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
 
-    #bar-chart, #date-container, #pie-chart, #table-container {
-      width: 100%;
-      height: 100%;
-    }
+        .summary-container {
+            flex: 1;
+            overflow-y: auto;
+        }
 
-    #generate {
-      background-color: green;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      font-size: 16px;
-      margin-top: 10px;
-    }
+        .save-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            align-self: center;
+            margin-bottom: 20px;
+        }
 
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-    }
+        .form-row {
+            margin-bottom: 15px;
+        }
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-  </style>
+        .form-row label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-row input {
+            width: calc(100% - 12px);
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .transcript {
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-y: auto;
+        }
+
+        .summary {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="container">
-    <!-- 1st Div: Bar Chart and Date of Filling + Generate Button -->
-    <div class="div1">
-      <!-- Bar Chart -->
-      <div id="bar-chart"></div>
-      <!-- Date of Filling and Generate Button -->
-      <div class="chart-container" id="date-container">
-        <label for="date">Date of Filling:</label>
-        <input type="date" id="date" name="date">
-        <button id="generate">Generate</button>
-      </div>
+    <div class="container">
+        <div class="form-container">
+            <div class="left-half" id="left-half">
+                <!-- Form fields will be dynamically added here -->
+            </div>
+            <div class="right-half">
+                <div class="transcript-container">
+                    <h2>Transcript</h2>
+                    <div class="transcript" id="transcript">
+                        <!-- Transcript text will be displayed here -->
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
+                </div>
+                <div class="summary-container">
+                    <h2>Summary</h2>
+                    <div class="summary" id="summary">
+                        <!-- Summary text will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="save-button" onclick="saveData()">Save</button>
     </div>
 
-    <!-- 2nd Div: Pie Chart and Tabular Information -->
-    <div class="div2">
-      <!-- Pie Chart -->
-      <div id="pie-chart"></div>
-      <!-- Tabular Information -->
-      <div class="table-container" id="table-container"></div>
-    </div>
-  </div>
+    <script>
+        // Sample JSON data
+        const jsonData = {
+            'IS_COMPLAINT': true,
+            'MEMBER_NAME': 'Mary Johnson',
+            'AGENT_NAME': 'Sarah',
+            'PROVIDER': 'Robert Smith',
+            'HOSPITAL_NAME': 'General Clinic',
+            'EVENT_DATE': 'January 2nd 2021',
+            'LOCATION': 'Springfield, IL',
+            'RESOLUTION_TIME': 'less than 30 days',
+            'MEMBER_ID': '1EG4TE5MK73',
+            'THERAPEUTIC_AND_DIAGNOSTIC_DETAILS': 'blood test',
+            'MEDICATION_DETAILS': 'UNIDENTIFIED',
+            'DISEASE_SYMPTOM_DETAILS': 'lightheaded, diabetes',
+            'SENTIMENTS': 'UNIDENTIFIED',
+            'ONTOLOGY': 'UNIDENTIFIED',
+            'SUMMARY': "Mary Johnson needs to file a grievance about her recent visit to her primary care physician, Dr. Robert Smith. Sarah is sorry to hear that Mary Johnson needs to file a complaint about her recent visit to her primary care physician, Dr. Robert Smith. Mary Johnson's appointment was scheduled for 9 AM on January 2nd, 2021. The address is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but I didn't catch her last name. Mary Johnson has been seeing Dr. Smith for about a year now. This was the first time she had such a negative experience.Mary Johnson needs to file a grievance about her recent visit to her primary care physician, Dr. Robert Smith. Sarah is sorry to hear that Mary Johnson needs to file a complaint about her recent visit to her primary care physician, Dr. Robert Smith. Mary Johnson's appointment was scheduled for 9 AM on January 2nd, 2021. The address is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but I didn't catch her last name. Mary Johnson has been seeing Dr. Smith for about a year now. This was the first time she had such a negative experience."
+        };
 
+        const leftHalf = document.getElementById('left-half');
+        const transcriptDiv = document.getElementById('transcript');
+        const summaryDiv = document.getElementById('summary');
+
+        // Function to dynamically generate form fields based on JSON data
+// Function to dynamically generate form fields based on JSON data
+function generateFormFields(data) {
+    for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+            const label = document.createElement('label');
+            label.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
+
+            const input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.value = data[key];
+
+            const formRow = document.createElement('div');
+            formRow.classList.add('form-row');
+            formRow.appendChild(label);
+            formRow.appendChild(input);
+
+            leftHalf.appendChild(formRow);
+        }
+    }
+}
+
+        const summarytext = document.getElementById("summary");
+        summarytext.textContent = jsonData.SUMMARY;
+        // Function to save data (You can replace this with your actual save logic)
+        function saveData() {
+            alert('Data saved successfully!');
+        }
+
+        // Initial setup
+        generateFormFields(jsonData);
+    </script>
 </body>
 </html>
-
-    
               
                 
   </plaintext>
