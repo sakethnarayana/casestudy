@@ -7,137 +7,45 @@
 </head>
 <body>
   <plaintext>
-    
-
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Form</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
         .container {
             display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
         }
-
-        .form-container {
-            display: flex;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .left-half {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
+        .left-half, .right-half {
             border-right: 1px solid #ccc;
-        }
-
-        .right-half {
             display: flex;
             flex-direction: column;
-            flex: 1;
+        }
+        .right-top,.right-bottom {
+            padding: 10px;
+        }
+        .bottom{
+            text-align: center;
+        }
+        .table-container {
             padding: 20px;
         }
-
-        .transcript-container {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 20px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .summary-container {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .save-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            align-self: center;
-            margin-bottom: 20px;
-        }
-
-        .form-row {
-            margin-bottom: 15px;
-        }
-
-        .form-row label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .form-row input {
-            width: calc(100% - 12px);
+        th, td {
             padding: 8px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
-        .transcript {
-            font-size: 14px;
-            line-height: 1.6;
-            overflow-y: auto;
-        }
-
-        .summary {
-            font-size: 14px;
-            line-height: 1.6;
-            margin-top: 20px;
+        th {
+            font-weight: bold;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="form-container">
-            <div class="left-half" id="left-half">
-                <!-- Form fields will be dynamically added here -->
-            </div>
-            <div class="right-half">
-                <div class="transcript-container">
-                    <h2>Transcript</h2>
-                    <div class="transcript" id="transcript">
-                        <!-- Transcript text will be displayed here -->
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </div>
-                </div>
-                <div class="summary-container">
-                    <h2>Summary</h2>
-                    <div class="summary" id="summary">
-                        <!-- Summary text will be displayed here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button class="save-button" onclick="saveData()">Save</button>
-    </div>
-
     <script>
         // Sample JSON data
         const jsonData = {
@@ -148,54 +56,89 @@
             'HOSPITAL_NAME': 'General Clinic',
             'EVENT_DATE': 'January 2nd 2021',
             'LOCATION': 'Springfield, IL',
-            'RESOLUTION_TIME': 'less than 30 days',
-            'MEMBER_ID': '1EG4TE5MK73',
-            'THERAPEUTIC_AND_DIAGNOSTIC_DETAILS': 'blood test',
-            'MEDICATION_DETAILS': 'UNIDENTIFIED',
-            'DISEASE_SYMPTOM_DETAILS': 'lightheaded, diabetes',
-            'SENTIMENTS': 'UNIDENTIFIED',
-            'ONTOLOGY': 'UNIDENTIFIED',
-            'SUMMARY': "Mary Johnson needs to file a grievance about her recent visit to her primary care physician, Dr. Robert Smith. Sarah is sorry to hear that Mary Johnson needs to file a complaint about her recent visit to her primary care physician, Dr. Robert Smith. Mary Johnson's appointment was scheduled for 9 AM on January 2nd, 2021. The address is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but I didn't catch her last name. Mary Johnson has been seeing Dr. Smith for about a year now. This was the first time she had such a negative experience.Mary Johnson needs to file a grievance about her recent visit to her primary care physician, Dr. Robert Smith. Sarah is sorry to hear that Mary Johnson needs to file a complaint about her recent visit to her primary care physician, Dr. Robert Smith. Mary Johnson's appointment was scheduled for 9 AM on January 2nd, 2021. The address is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but I didn't catch her last name. Mary Johnson has been seeing Dr. Smith for about a year now. This was the first time she had such a negative experience."
+         //   'RESOLUTION_TIME': 'less than 30 days',
+         //   'MEMBER_ID': '1EG4TE5MK73',
+         //   'THERAPEUTIC_AND_DIAGNOSTIC_DETAILS': 'blood test',
+         //   'MEDICATION_DETAILS': 'UNIDENTIFIED',
+         //   'DISEASE_SYMPTOM_DETAILS': 'lightheaded, diabetes',
+         //   'SENTIMENTS': 'UNIDENTIFIED',
+         //   'ONTOLOGY': 'UNIDENTIFIED',
+            'SUMMARY': "ais General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but Sarah, but I didn't catch her last name. Mary Johnson has been seeing Dr. Smith for about a year now. This was the first time she had such a negative experience.Mary Johnson needs to file a grievance about her recent visit to her primary care physician, Dr. Robert Smith. Sarah is sorry to hear that Mary Johnson needs to file a complaint about her recent visit to her primary care physician, Dr. Robert Smith. Mary Johnson's appointment was scheduled for 9 AM on January 2nd, 2021. The address is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but I didn't catch her last name. Mary Johnson has been seeing Dr. Smith for about a year now. This was the first time she had such a negative experience."
         };
 
-        const leftHalf = document.getElementById('left-half');
-        const transcriptDiv = document.getElementById('transcript');
-        const summaryDiv = document.getElementById('summary');
-
-        // Function to dynamically generate form fields based on JSON data
-// Function to dynamically generate form fields based on JSON data
-function generateFormFields(data) {
-    for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-            const label = document.createElement('label');
-            label.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
-
-            const input = document.createElement('input');
-            input.setAttribute('type', 'text');
-            input.value = data[key];
-
-            const formRow = document.createElement('div');
-            formRow.classList.add('form-row');
-            formRow.appendChild(label);
-            formRow.appendChild(input);
-
-            leftHalf.appendChild(formRow);
-        }
-    }
-}
-
-        const summarytext = document.getElementById("summary");
-        summarytext.textContent = jsonData.SUMMARY;
-        // Function to save data (You can replace this with your actual save logic)
-        function saveData() {
-            alert('Data saved successfully!');
-        }
-
+        sampletext ="Loaboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+        
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-half" style="overflow: auto;height:550px;">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="text-align: center;">GEN AI ENTITIES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="right-half">
+            <div>
+                <div class="right-top">
+                    <span><h2>Summary</h2></span>
+                    <div class="summary" id="summary" style="overflow: auto;height:200px;">
+                        <!-- Summary text will be filled dynamically -->
+                    </div>
+                </div>
+                <div class="right-bottom">
+                    <span><h2>Transcript</h2></span>
+                    <div class="transcript" id="transcript" style="overflow: auto;height:200px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <button>save</button>
+    </div>
+    <script>
         // Initial setup
-        generateFormFields(jsonData);
+        populateTable(jsonData);
+        document.getElementById('summary').textContent = jsonData.SUMMARY;
+        document.getElementById('transcript').textContent = sampletext;
+       // Function to populate table
+        function populateTable(data) {
+            const tableBody = document.getElementById('table-body');
+
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    const row = document.createElement('tr');
+                    const keyCell = document.createElement('td');
+                    const valueCell = document.createElement('td');
+
+                    keyCell.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
+                    valueCell.textContent = data[key];
+                    keyCell.style.fontWeight = 'bold';
+                    row.appendChild(keyCell);
+                    row.appendChild(valueCell);
+                    tableBody.appendChild(row);
+                }
+            }
+        }
+
+
+
+
+
+
+
+         
     </script>
 </body>
 </html>
+
               
                 
   </plaintext>
