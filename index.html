@@ -7,137 +7,51 @@
 </head>
 <body>
   <plaintext>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Form</title>
-    <style>
-        .container {
-            display: flex;
-        }
-        .left-half, .right-half {
-            border-right: 1px solid #ccc;
-            display: flex;
-            flex-direction: column;
-        }
-        .right-top,.right-bottom {
-            padding: 10px;
-        }
-        .bottom{
-            text-align: center;
-        }
-        .table-container {
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+function populateTable(data) {
+    const tableBody = document.getElementById('table-body');
 
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+    for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+            const row = document.createElement('tr');
+            const keyCell = document.createElement('td');
+            const valueCell = document.createElement('td');
 
-        th {
-            font-weight: bold;
-        }
-    </style>
-    <script>
-        // Sample JSON data
-        const jsonData = {
-            'IS_COMPLAINT': true,
-            'MEMBER_NAME': 'Mary Johnson',
-            'AGENT_NAME': 'Sarah',
-            'PROVIDER': 'Robert Smith',
-            'HOSPITAL_NAME': 'General Clinic',
-            'EVENT_DATE': 'January 2nd 2021',
-            'LOCATION': 'Springfield, IL',
-         //   'RESOLUTION_TIME': 'less than 30 days',
-         //   'MEMBER_ID': '1EG4TE5MK73',
-         //   'THERAPEUTIC_AND_DIAGNOSTIC_DETAILS': 'blood test',
-         //   'MEDICATION_DETAILS': 'UNIDENTIFIED',
-         //   'DISEASE_SYMPTOM_DETAILS': 'lightheaded, diabetes',
-         //   'SENTIMENTS': 'UNIDENTIFIED',
-         //   'ONTOLOGY': 'UNIDENTIFIED',
-            'SUMMARY': "ais General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but Sarah, but I didn't catch her last name. Mary Johnson has been seeing Dr. Smith for about a year now. This was the first time she had such a negative experience.Mary Johnson needs to file a grievance about her recent visit to her primary care physician, Dr. Robert Smith. Sarah is sorry to hear that Mary Johnson needs to file a complaint about her recent visit to her primary care physician, Dr. Robert Smith. Mary Johnson's appointment was scheduled for 9 AM on January 2nd, 2021. The address is General Clinic, 789 Health Way, Springfield, IL, and the nurse who took my blood was named Sarah, but I didn't catch her last name. Mary Johnson has been seeing Dr. Smith for about a year now. This was the first time she had such a negative experience."
-        };
-
-        sampletext ="Loaboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-        
-    </script>
-</head>
-<body>
-    <div class="container">
-        <div class="left-half" style="overflow: auto;height:550px;">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="2" style="text-align: center;">GEN AI ENTITIES</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body"></tbody>
-                </table>
-            </div>
-        </div>
-        <div class="right-half">
-            <div>
-                <div class="right-top">
-                    <span><h2>Summary</h2></span>
-                    <div class="summary" id="summary" style="overflow: auto;height:200px;">
-                        <!-- Summary text will be filled dynamically -->
-                    </div>
-                </div>
-                <div class="right-bottom">
-                    <span><h2>Transcript</h2></span>
-                    <div class="transcript" id="transcript" style="overflow: auto;height:200px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="bottom">
-        <button>save</button>
-    </div>
-    <script>
-        // Initial setup
-        populateTable(jsonData);
-        document.getElementById('summary').textContent = jsonData.SUMMARY;
-        document.getElementById('transcript').textContent = sampletext;
-       // Function to populate table
-        function populateTable(data) {
-            const tableBody = document.getElementById('table-body');
-
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    const row = document.createElement('tr');
-                    const keyCell = document.createElement('td');
-                    const valueCell = document.createElement('td');
-
-                    keyCell.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
-                    valueCell.textContent = data[key];
-                    keyCell.style.fontWeight = 'bold';
-                    row.appendChild(keyCell);
-                    row.appendChild(valueCell);
-                    tableBody.appendChild(row);
+            keyCell.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
+            
+            // Check if the value is an object
+            if (typeof data[key] === 'object') {
+                // Create a nested table to display object properties
+                const nestedTable = document.createElement('table');
+                
+                // Populate nested table with object properties
+                for (const nestedKey in data[key]) {
+                    if (data[key].hasOwnProperty(nestedKey)) {
+                        const nestedRow = document.createElement('tr');
+                        const nestedKeyCell = document.createElement('td');
+                        const nestedValueCell = document.createElement('td');
+                        
+                        nestedKeyCell.textContent = nestedKey;
+                        nestedValueCell.textContent = data[key][nestedKey];
+                        
+                        nestedRow.appendChild(nestedKeyCell);
+                        nestedRow.appendChild(nestedValueCell);
+                        nestedTable.appendChild(nestedRow);
+                    }
                 }
+                
+                // Append nested table to value cell
+                valueCell.appendChild(nestedTable);
+            } else {
+                valueCell.textContent = data[key];
             }
+            
+            keyCell.style.fontWeight = 'bold';
+            row.appendChild(keyCell);
+            row.appendChild(valueCell);
+            tableBody.appendChild(row);
         }
-
-
-
-
-
-
-
-         
-    </script>
-</body>
-</html>
+    }
+}
 
               
                 
